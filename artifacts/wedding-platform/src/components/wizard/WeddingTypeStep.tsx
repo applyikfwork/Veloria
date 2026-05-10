@@ -4,9 +4,6 @@ import { cn } from "@/lib/utils";
 
 const WEDDING_TYPES = [
   { id: "hindu", name: "Hindu Wedding", emoji: "🪔" },
-  { id: "muslim", name: "Muslim Wedding", emoji: "🌙" },
-  { id: "sikh", name: "Sikh Wedding", emoji: "🕯️" },
-  { id: "christian", name: "Christian Wedding", emoji: "⛪" },
   { id: "south-indian", name: "South Indian Wedding", emoji: "🥥" },
   { id: "destination", name: "Destination Wedding", emoji: "✈️" },
   { id: "modern-luxury", name: "Modern Luxury Wedding", emoji: "💎" },

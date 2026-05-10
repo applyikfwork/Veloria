@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { 
   CheckCircle2, 
@@ -11,17 +11,26 @@ import {
   Video, 
   QrCode,
   Sparkles,
-  ExternalLink
+  ExternalLink,
+  Edit2,
+  Check,
+  Eye
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
+import { Link } from "wouter";
+import { useAuth } from "@/hooks/useAuth";
 
 interface ExportShareStepProps {
   formData: any;
   onNext: () => void;
   onBack: () => void;
+  savedSlug?: string;
+  isSaving?: boolean;
+  onSaveSlug?: (slug: string) => void;
 }
 
 const EXPORT_OPTIONS = [
@@ -33,8 +42,37 @@ const EXPORT_OPTIONS = [
   { id: "copy", label: "Copy Link", icon: <Copy className="h-5 w-5" />, premium: false, color: "text-zinc-400" },
 ];
 
-export default function ExportShareStep({ formData, onNext, onBack }: ExportShareStepProps) {
-  const url = `${(formData.bride?.name || "priya").toLowerCase()}weds${(formData.groom?.name || "arjun").toLowerCase()}.vivah.in`;
+export default function ExportShareStep({ formData, onNext, onBack, savedSlug, isSaving, onSaveSlug }: ExportShareStepProps) {
+  const { toast } = useToast();
+  const [isEditingSlug, setIsEditingSlug] = useState(false);
+  const [customSlug, setCustomSlug] = useState("");
+
+  const defaultSlug = `${(formData.bride?.name || "priya").toLowerCase()}weds${(formData.groom?.name || "arjun").toLowerCase()}`.replace(/[^a-z0-9]/gi, '');
+  const displaySlug = savedSlug || defaultSlug;
+  const url = `vivah.in/i/${displaySlug}`;
+
+  useEffect(() => {
+    if (savedSlug) {
+      setCustomSlug(savedSlug);
+    } else {
+      setCustomSlug(defaultSlug);
+    }
+  }, [savedSlug, defaultSlug]);
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(url);
+    toast({
+      title: "Link copied!",
+      description: "Invitation link copied to clipboard.",
+    });
+  };
+
+  const handleSaveSlug = () => {
+    if (onSaveSlug) {
+      onSaveSlug(customSlug);
+      setIsEditingSlug(false);
+    }
+  };
 
   return (
     <div className="space-y-12 pb-10">
@@ -72,19 +110,74 @@ export default function ExportShareStep({ formData, onNext, onBack }: ExportShar
 
       <div className="space-y-8 max-w-2xl mx-auto">
         <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-xl">
-          <Label className="text-white mb-3 block">Your Wedding Website URL</Label>
-          <div className="flex gap-2">
-            <div className="relative flex-1">
-              <ExternalLink className="absolute left-3 top-3 h-4 w-4 text-primary" />
-              <Input
-                readOnly
-                value={url}
-                className="bg-black/40 border-white/10 pl-10 text-primary font-medium focus:ring-0"
-              />
+          <div className="flex items-center justify-between mb-3">
+            <Label className="text-white block">Your Wedding Website URL</Label>
+            {!isEditingSlug && (
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="text-primary hover:text-primary/80 h-8 gap-1 px-2"
+                onClick={() => setIsEditingSlug(true)}
+                data-testid="button-edit-slug"
+              >
+                <Edit2 className="h-3 w-3" />
+                Edit URL
+              </Button>
+            )}
+          </div>
+          
+          <div className="flex flex-col gap-4">
+            <div className="flex gap-2">
+              <div className="relative flex-1">
+                <ExternalLink className="absolute left-3 top-3 h-4 w-4 text-primary" />
+                {isEditingSlug ? (
+                  <div className="flex items-center bg-black/40 border border-white/10 rounded-md overflow-hidden">
+                    <span className="pl-10 pr-0 text-white/40 text-sm whitespace-nowrap">vivah.in/i/</span>
+                    <Input
+                      value={customSlug}
+                      onChange={(e) => setCustomSlug(e.target.value.toLowerCase().replace(/[^a-z0-9]/gi, ''))}
+                      className="bg-transparent border-none pl-1 text-primary font-medium focus-visible:ring-0 focus-visible:ring-offset-0"
+                      autoFocus
+                    />
+                  </div>
+                ) : (
+                  <Input
+                    readOnly
+                    value={url}
+                    className="bg-black/40 border-white/10 pl-10 text-primary font-medium focus:ring-0"
+                  />
+                )}
+              </div>
+              
+              {isEditingSlug ? (
+                <Button 
+                  onClick={handleSaveSlug} 
+                  disabled={isSaving}
+                  className="bg-primary text-primary-foreground hover:bg-primary/90"
+                  data-testid="button-save-custom-url"
+                >
+                  <Check className="h-4 w-4" />
+                </Button>
+              ) : (
+                <Button 
+                  variant="secondary" 
+                  className="bg-primary/20 text-primary hover:bg-primary/30" 
+                  onClick={copyToClipboard}
+                  data-testid="button-copy-link"
+                >
+                  <Copy className="h-4 w-4" />
+                </Button>
+              )}
             </div>
-            <Button variant="secondary" className="bg-primary/20 text-primary hover:bg-primary/30" data-testid="button-copy-link">
-              <Copy className="h-4 w-4" />
-            </Button>
+
+            {savedSlug && (
+              <Link href={`/i/${savedSlug}`} target="_blank">
+                <Button className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white gap-2" data-testid="button-view-invitation">
+                  <Eye className="h-4 w-4" />
+                  View Your Invitation
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
 

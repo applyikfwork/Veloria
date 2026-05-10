@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Camera, Sparkles } from "lucide-react";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -24,7 +24,7 @@ const FloatingInput = ({ label, id, value, onChange, type = "text", textarea = f
       <Component
         id={id}
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e: any) => onChange(e.target.value)}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         className={cn(
@@ -48,62 +48,97 @@ const FloatingInput = ({ label, id, value, onChange, type = "text", textarea = f
   );
 };
 
-const PhotoUpload = ({ label, id }: any) => (
-  <div className="flex flex-col items-center gap-4 mt-6">
-    <Label className="text-white/70 text-sm font-medium">{label}</Label>
-    <div 
-      className="w-40 h-40 md:w-48 md:h-48 rounded-full border-2 border-dashed border-white/20 bg-white/5 flex flex-col items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-white/10 transition-all group"
-      data-testid={`upload-${id}`}
-    >
-      <Camera className="h-8 w-8 text-white/30 group-hover:text-primary transition-colors mb-2" />
-      <span className="text-xs text-white/40 group-hover:text-white/60">Upload Photo</span>
+const PhotoUpload = ({ label, id, photoUrl, onPhotoChange }: any) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        onPhotoChange(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  return (
+    <div className="flex flex-col items-center gap-4 mt-6">
+      <Label className="text-white/70 text-sm font-medium">{label}</Label>
+      <label 
+        className="w-40 h-40 md:w-48 md:h-48 rounded-full border-2 border-dashed border-white/20 bg-white/5 flex flex-col items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-white/10 transition-all group overflow-hidden relative"
+        data-testid={`upload-${id}`}
+      >
+        <input 
+          type="file" 
+          ref={fileInputRef}
+          className="hidden" 
+          accept="image/*" 
+          onChange={handleFileChange}
+        />
+        {photoUrl ? (
+          <img src={photoUrl} alt={label} className="w-full h-full object-cover" />
+        ) : (
+          <>
+            <Camera className="h-8 w-8 text-white/30 group-hover:text-primary transition-colors mb-2" />
+            <span className="text-xs text-white/40 group-hover:text-white/60">Upload Photo</span>
+          </>
+        )}
+      </label>
     </div>
+  );
+};
+
+const PersonFields = ({ type, data, updatePerson }: { type: 'bride' | 'groom', data: any, updatePerson: (type: 'bride' | 'groom', field: string, value: any) => void }) => (
+  <div className="space-y-2">
+    <PhotoUpload 
+      label={`${type === 'bride' ? "Bride's" : "Groom's"} Photo`} 
+      id={`${type}-photo`} 
+      photoUrl={data[type].photo}
+      onPhotoChange={(dataUrl: string) => updatePerson(type, 'photo', dataUrl)}
+    />
+    <FloatingInput 
+      label="Full Name" 
+      id={`${type}-name`} 
+      value={data[type].name} 
+      onChange={(v: string) => updatePerson(type, 'name', v)} 
+    />
+    <FloatingInput 
+      label="Nickname" 
+      id={`${type}-nickname`} 
+      value={data[type].nickname} 
+      onChange={(v: string) => updatePerson(type, 'nickname', v)} 
+    />
+    <FloatingInput 
+      label="Instagram Handle" 
+      id={`${type}-instagram`} 
+      value={data[type].instagram} 
+      onChange={(v: string) => updatePerson(type, 'instagram', v)} 
+    />
+    <FloatingInput 
+      label="Short Bio" 
+      id={`${type}-bio`} 
+      value={data[type].bio} 
+      onChange={(v: string) => updatePerson(type, 'bio', v)} 
+      textarea 
+    />
   </div>
 );
 
 export default function CoupleDetailsStep({ data, onChange, onNext, onBack }: CoupleDetailsStepProps) {
   const updatePerson = (type: 'bride' | 'groom', field: string, value: any) => {
     onChange({
+      ...data,
       [type]: { ...data[type], [field]: value }
     });
   };
 
   const updateLoveStory = (field: string, value: any) => {
     onChange({
+      ...data,
       loveStory: { ...data.loveStory, [field]: value }
     });
   };
-
-  const PersonFields = ({ type }: { type: 'bride' | 'groom' }) => (
-    <div className="space-y-2">
-      <PhotoUpload label={`${type === 'bride' ? "Bride's" : "Groom's"} Photo`} id={`${type}-photo`} />
-      <FloatingInput 
-        label="Full Name" 
-        id={`${type}-name`} 
-        value={data[type].name} 
-        onChange={(v: string) => updatePerson(type, 'name', v)} 
-      />
-      <FloatingInput 
-        label="Nickname" 
-        id={`${type}-nickname`} 
-        value={data[type].nickname} 
-        onChange={(v: string) => updatePerson(type, 'nickname', v)} 
-      />
-      <FloatingInput 
-        label="Instagram Handle" 
-        id={`${type}-instagram`} 
-        value={data[type].instagram} 
-        onChange={(v: string) => updatePerson(type, 'instagram', v)} 
-      />
-      <FloatingInput 
-        label="Short Bio" 
-        id={`${type}-bio`} 
-        value={data[type].bio} 
-        onChange={(v: string) => updatePerson(type, 'bio', v)} 
-        textarea 
-      />
-    </div>
-  );
 
   return (
     <div className="w-full">
@@ -113,12 +148,12 @@ export default function CoupleDetailsStep({ data, onChange, onNext, onBack }: Co
       <div className="hidden md:grid grid-cols-2 gap-12">
         <motion.div initial={{ x: -20, opacity: 0 }} animate={{ x: 0, opacity: 1 }}>
           <h3 className="text-xl font-serif text-primary border-b border-primary/20 pb-2 mb-4">The Bride</h3>
-          <PersonFields type="bride" />
+          <PersonFields type="bride" data={data} updatePerson={updatePerson} />
         </motion.div>
         
         <motion.div initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.1 }}>
           <h3 className="text-xl font-serif text-primary border-b border-primary/20 pb-2 mb-4">The Groom</h3>
-          <PersonFields type="groom" />
+          <PersonFields type="groom" data={data} updatePerson={updatePerson} />
         </motion.div>
       </div>
 
@@ -130,10 +165,10 @@ export default function CoupleDetailsStep({ data, onChange, onNext, onBack }: Co
             <TabsTrigger value="groom" className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Groom</TabsTrigger>
           </TabsList>
           <TabsContent value="bride">
-            <PersonFields type="bride" />
+            <PersonFields type="bride" data={data} updatePerson={updatePerson} />
           </TabsContent>
           <TabsContent value="groom">
-            <PersonFields type="groom" />
+            <PersonFields type="groom" data={data} updatePerson={updatePerson} />
           </TabsContent>
         </Tabs>
       </div>
