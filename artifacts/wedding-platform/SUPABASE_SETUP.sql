@@ -67,6 +67,62 @@ CREATE POLICY "Users can delete their own photos"
   TO authenticated
   USING (bucket_id = 'invitation-photos' AND auth.uid()::text = (storage.foldername(name))[1]);
 
+-- 9. Guests / RSVP responses
+CREATE TABLE IF NOT EXISTS guests (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  invitation_id UUID REFERENCES invitations(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  email TEXT,
+  phone TEXT,
+  attending BOOLEAN,
+  plus_one BOOLEAN DEFAULT false,
+  guest_count INTEGER DEFAULT 1,
+  meal_preference TEXT,
+  dietary_notes TEXT,
+  events_attending TEXT[],
+  table_number TEXT,
+  checked_in BOOLEAN DEFAULT false,
+  checked_in_at TIMESTAMPTZ,
+  qr_code TEXT UNIQUE,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+ALTER TABLE guests ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Invitation owners manage guests" ON guests FOR ALL USING (
+  EXISTS (SELECT 1 FROM invitations WHERE id = guests.invitation_id AND user_id = auth.uid())
+);
+CREATE POLICY "Guests can insert themselves" ON guests FOR INSERT WITH CHECK (true);
+CREATE POLICY "Public read guests by invitation" ON guests FOR SELECT USING (true);
+
+-- 10. Wishes / Blessings wall
+CREATE TABLE IF NOT EXISTS wishes (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  invitation_id UUID REFERENCES invitations(id) ON DELETE CASCADE,
+  guest_name TEXT NOT NULL,
+  message TEXT NOT NULL,
+  relation TEXT,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+ALTER TABLE wishes ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Anyone can add wishes" ON wishes FOR INSERT WITH CHECK (true);
+CREATE POLICY "Wishes are public" ON wishes FOR SELECT USING (true);
+
+-- 11. Quiz attempts
+CREATE TABLE IF NOT EXISTS quiz_attempts (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  invitation_id UUID REFERENCES invitations(id) ON DELETE CASCADE,
+  player_name TEXT NOT NULL,
+  score INTEGER NOT NULL,
+  total INTEGER NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+ALTER TABLE quiz_attempts ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Anyone can attempt quiz" ON quiz_attempts FOR INSERT WITH CHECK (true);
+CREATE POLICY "Quiz attempts are public" ON quiz_attempts FOR SELECT USING (true);
+
+-- 12. Add extra columns to invitations
+ALTER TABLE invitations ADD COLUMN IF NOT EXISTS wedding_hashtag TEXT;
+ALTER TABLE invitations ADD COLUMN IF NOT EXISTS guest_greeting TEXT;
+
 -- ============================================
 -- DONE! Your Supabase is now fully configured.
 -- ============================================
