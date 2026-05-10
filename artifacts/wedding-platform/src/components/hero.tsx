@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { ChevronDown } from 'lucide-react';
 import PhoneMockup from './phone-mockup';
@@ -46,13 +47,15 @@ export default function Hero() {
           </p>
           
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-            <Button 
-              size="lg" 
-              className="w-full sm:w-auto h-14 px-8 bg-gradient-to-r from-primary to-[#B59530] text-primary-foreground text-lg rounded-full font-semibold shadow-[0_0_40px_rgba(212,175,55,0.3)] hover:shadow-[0_0_60px_rgba(212,175,55,0.5)] transition-all hover:scale-105"
-              data-testid="button-hero-create"
-            >
-              Create Invitation
-            </Button>
+            <Link href="/create">
+              <Button 
+                size="lg" 
+                className="w-full sm:w-auto h-14 px-8 bg-gradient-to-r from-primary to-[#B59530] text-primary-foreground text-lg rounded-full font-semibold shadow-[0_0_40px_rgba(212,175,55,0.3)] hover:shadow-[0_0_60px_rgba(212,175,55,0.5)] transition-all hover:scale-105"
+                data-testid="button-hero-create"
+              >
+                Create Invitation
+              </Button>
+            </Link>
             <Button 
               size="lg" 
               variant="outline" 

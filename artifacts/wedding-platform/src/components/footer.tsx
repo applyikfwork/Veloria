@@ -43,7 +43,6 @@ export default function Footer() {
             <h4 className="font-semibold text-foreground mb-6 uppercase tracking-wider text-sm">Company</h4>
             <ul className="space-y-3">
               <li><a href="#" className="text-foreground/60 hover:text-primary text-sm transition-colors">About Us</a></li>
-              <li><a href="#" className="text-foreground/60 hover:text-primary text-sm transition-colors">Partner Program</a></li>
               <li><a href="#" className="text-foreground/60 hover:text-primary text-sm transition-colors">Privacy Policy</a></li>
               <li><a href="#" className="text-foreground/60 hover:text-primary text-sm transition-colors">Terms of Service</a></li>
             </ul>

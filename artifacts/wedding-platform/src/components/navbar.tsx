@@ -38,11 +38,12 @@ export default function Navbar() {
           <nav className="hidden md:flex items-center gap-8">
             <a href="#features" className="text-foreground/80 hover:text-primary transition-colors text-sm uppercase tracking-widest font-medium" data-testid="link-nav-features">Features</a>
             <a href="#templates" className="text-foreground/80 hover:text-primary transition-colors text-sm uppercase tracking-widest font-medium" data-testid="link-nav-templates">Templates</a>
-            <a href="#partners" className="text-foreground/80 hover:text-primary transition-colors text-sm uppercase tracking-widest font-medium" data-testid="link-nav-partners">Partners</a>
             <a href="#pricing" className="text-foreground/80 hover:text-primary transition-colors text-sm uppercase tracking-widest font-medium" data-testid="link-nav-pricing">Pricing</a>
-            <Button className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-6 rounded-full" data-testid="button-nav-cta">
-              Create Invitation
-            </Button>
+            <Link href="/create">
+              <Button className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-6 rounded-full" data-testid="button-nav-cta">
+                Create Invitation
+              </Button>
+            </Link>
           </nav>
 
           {/* Mobile Menu Toggle */}
@@ -66,11 +67,12 @@ export default function Navbar() {
         >
           <a href="#features" onClick={() => setMobileMenuOpen(false)} className="text-xl font-serif text-foreground hover:text-primary transition-colors">Features</a>
           <a href="#templates" onClick={() => setMobileMenuOpen(false)} className="text-xl font-serif text-foreground hover:text-primary transition-colors">Templates</a>
-          <a href="#partners" onClick={() => setMobileMenuOpen(false)} className="text-xl font-serif text-foreground hover:text-primary transition-colors">Partners</a>
           <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="text-xl font-serif text-foreground hover:text-primary transition-colors">Pricing</a>
-          <Button className="bg-primary text-primary-foreground w-full py-6 text-lg rounded-full mt-4" onClick={() => setMobileMenuOpen(false)}>
-            Create Your Invitation
-          </Button>
+          <Link href="/create" onClick={() => setMobileMenuOpen(false)}>
+            <Button className="bg-primary text-primary-foreground w-full py-6 text-lg rounded-full mt-4">
+              Create Your Invitation
+            </Button>
+          </Link>
         </motion.div>
       )}
     </>
