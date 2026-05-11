@@ -156,6 +156,10 @@ overrides:
 importers:
 
   .:
+    dependencies:
+      '@google/generative-ai':
+        specifier: ^0.24.1
+        version: 0.24.1
     devDependencies:
       prettier:
         specifier: ^3.8.1
