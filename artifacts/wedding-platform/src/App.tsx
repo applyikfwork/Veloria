@@ -26,7 +26,7 @@ const pageVariants = {
 
 const pageTransition = {
   duration: 0.25,
-  ease: "easeInOut",
+  ease: "easeInOut" as const,
 };
 
 function AnimatedRoute({ component: Component }: { component: React.ComponentType }) {
