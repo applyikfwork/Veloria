@@ -68,7 +68,7 @@ export default function Pricing() {
                 { text: "Standard Templates", included: true },
                 { text: "Up to 50 Guests", included: true },
                 { text: "Basic RSVP Tracking", included: true },
-                { text: "Vivah Watermark", included: true },
+                { text: "Veloria Watermark", included: true },
                 { text: "Custom Domain", included: false },
                 { text: "WhatsApp Integration", included: false },
                 { text: "Cinematic Music", included: false },

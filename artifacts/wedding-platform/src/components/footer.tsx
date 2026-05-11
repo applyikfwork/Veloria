@@ -11,7 +11,7 @@ export default function Footer() {
           
           {/* Brand */}
           <div className="lg:col-span-1">
-            <span className="font-serif text-4xl font-bold text-primary tracking-wider mb-4 block">Vivah</span>
+            <span className="font-serif text-4xl font-bold text-primary tracking-wider mb-4 block">Veloria</span>
             <p className="text-foreground/60 text-sm leading-relaxed mb-6">
               Where love meets timeless art. The world's most luxurious digital Indian wedding invitation platform.
             </p>
@@ -67,7 +67,7 @@ export default function Footer() {
 
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-foreground/40 text-sm">
-            © {new Date().getFullYear()} Vivah Inc. All rights reserved.
+            © {new Date().getFullYear()} Veloria Inc. All rights reserved.
           </p>
           <p className="text-foreground/40 text-sm flex items-center gap-1">
             Crafted with <Heart size={14} className="text-primary fill-primary" /> in India

@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 
 const SCENES = [
-  { id: 0, duration: 3000 }, // Vivah Presents
+  { id: 0, duration: 3000 }, // Veloria Presents
   { id: 1, duration: 3000 }, // Couple Names
   { id: 2, duration: 3000 }, // Are Getting Married
   { id: 3, duration: 3000 }, // Date and Venue
@@ -173,7 +173,7 @@ export default function VideoInvitationPage() {
             >
               <Sparkles className="h-12 w-12 text-primary" />
             </motion.div>
-            <h2 className="text-2xl font-serif tracking-[0.3em] text-primary/80 uppercase">Vivah Presents</h2>
+            <h2 className="text-2xl font-serif tracking-[0.3em] text-primary/80 uppercase">Veloria Presents</h2>
           </motion.div>
         )}
 

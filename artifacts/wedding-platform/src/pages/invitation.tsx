@@ -73,7 +73,7 @@ export default function InvitationPage() {
   // Features State
   const [wishes, setWishes] = useState<Wish[]>([]);
   const [quizScores, setQuizScores] = useState<any[]>([]);
-  const [language, setLanguage] = useState(localStorage.getItem('vivah_lang') || 'en');
+  const [language, setLanguage] = useState(localStorage.getItem('veloria_lang') || 'en');
   const [translations, setTranslations] = useState<any>({});
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   
@@ -179,7 +179,7 @@ export default function InvitationPage() {
       }
     }
     translate();
-    localStorage.setItem('vivah_lang', language);
+    localStorage.setItem('veloria_lang', language);
   }, [language]);
 
   // Photos for slideshow
@@ -860,7 +860,7 @@ export default function InvitationPage() {
         <div className="flex flex-col items-center gap-8">
           <div className="flex items-center justify-center gap-2 mb-4">
             <Sparkles className="h-6 w-6 text-primary" />
-            <span className="font-serif text-white text-3xl">Vivah</span>
+            <span className="font-serif text-white text-3xl">Veloria</span>
           </div>
           
           <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 text-sm text-white/60">
@@ -871,7 +871,7 @@ export default function InvitationPage() {
           </div>
 
           <div className="space-y-2">
-            <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Vivah Cinematic Invitations</p>
+            <p className="text-xs text-muted-foreground">© {new Date().getFullYear()} Veloria Cinematic Invitations</p>
             <p className="text-[10px] text-white/20 uppercase tracking-[0.3em]">Created with love in India</p>
           </div>
         </div>

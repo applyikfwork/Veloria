@@ -13,7 +13,7 @@ const testimonials = [
   },
   {
     id: 2,
-    quote: "Vivah perfectly captured the royal aesthetic we wanted. The background music, the smooth animations... it literally brought tears to my mother's eyes.",
+    quote: "Veloria perfectly captured the royal aesthetic we wanted. The background music, the smooth animations... it literally brought tears to my mother's eyes.",
     names: "Ayesha & Kabir",
     city: "Delhi",
     rating: 5

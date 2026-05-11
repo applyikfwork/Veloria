@@ -1,6 +1,6 @@
 kind = "web"
 previewPath = "/"
-title = "Indian Wedding Invitation Platform"
+title = "Veloria Wedding Platform"
 version = "1.0.0"
 id = "artifacts/wedding-platform"
 router = "path"

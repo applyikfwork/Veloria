@@ -124,7 +124,7 @@ export default function StoryCard({ brideName, groomName, date, venue, themeGrad
           </div>
           <div className="flex items-center justify-center gap-2">
             <Sparkles size={14} className="text-primary" />
-            <span className="text-[10px] text-white/40 uppercase tracking-[0.4em]">Vivah Cinematic</span>
+            <span className="text-[10px] text-white/40 uppercase tracking-[0.4em]">Veloria Cinematic</span>
           </div>
         </div>
       </div>
