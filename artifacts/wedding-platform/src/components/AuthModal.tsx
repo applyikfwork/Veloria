@@ -28,14 +28,14 @@ const FloatingInput = ({ label, id, value, onChange, type = "text" }: any) => {
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         className={cn(
-          "bg-white/5 border-white/10 text-white pt-6 pb-2 px-4 h-14 transition-all focus:border-primary focus:ring-primary/20",
+          "bg-foreground/5 border-border/25 text-foreground pt-6 pb-2 px-4 h-14 transition-all focus:border-primary focus:ring-primary/20",
         )}
         data-testid={`input-${id}`}
       />
       <Label
         htmlFor={id}
         className={cn(
-          "absolute left-4 transition-all pointer-events-none text-white/50",
+          "absolute left-4 transition-all pointer-events-none text-foreground/50",
           (isFocused || value) 
             ? "top-2 text-xs text-primary font-medium" 
             : "top-1/2 -translate-y-1/2 text-sm"
@@ -102,21 +102,21 @@ export default function AuthModal({ isOpen, onSuccess, onClose }: AuthModalProps
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-black/80 backdrop-blur-md"
+            className="absolute inset-0 bg-foreground/50 backdrop-blur-md"
           />
           
           <motion.div
             initial={{ scale: 0.95, opacity: 0, y: 20 }}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 20 }}
-            className="relative w-full max-w-md bg-[#0B0B0F] border border-white/10 rounded-3xl p-8 shadow-2xl overflow-hidden"
+            className="relative w-full max-w-md bg-card border border-border/30 rounded-3xl p-8 shadow-2xl overflow-hidden"
           >
             {/* Background Decorative Element */}
             <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/10 rounded-full blur-3xl" />
             
             <button 
               onClick={onClose}
-              className="absolute top-6 right-6 text-white/40 hover:text-white transition-colors"
+              className="absolute top-6 right-6 text-foreground/40 hover:text-foreground transition-colors"
               data-testid="button-close-modal"
             >
               <X className="h-6 w-6" />
@@ -126,14 +126,14 @@ export default function AuthModal({ isOpen, onSuccess, onClose }: AuthModalProps
               <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/50 rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-primary/20">
                 <span className="text-2xl font-serif font-bold text-black">V</span>
               </div>
-              <h2 className="text-2xl font-serif text-white mb-2" data-testid="text-modal-title">Save Your Invitation</h2>
-              <p className="text-white/50 text-center text-sm" data-testid="text-modal-subtitle">
+              <h2 className="text-2xl font-serif text-foreground mb-2" data-testid="text-modal-title">Save Your Invitation</h2>
+              <p className="text-foreground/55 text-center text-sm" data-testid="text-modal-subtitle">
                 Create a free account to save and share your wedding invitation
               </p>
             </div>
 
             <Tabs defaultValue="signin" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 bg-white/5 border border-white/10 rounded-full p-1 mb-6">
+              <TabsList className="grid w-full grid-cols-2 bg-foreground/6 border border-border/25 rounded-full p-1 mb-6">
                 <TabsTrigger 
                   value="signin" 
                   className="rounded-full data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"

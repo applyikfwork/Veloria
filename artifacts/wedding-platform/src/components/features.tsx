@@ -140,11 +140,11 @@ export default function Features() {
               key={feature.title}
               variants={itemVariants}
               whileHover={{ y: -6, scale: 1.02 }}
-              className="group relative bg-card/30 backdrop-blur-sm border border-white/8 rounded-2xl p-6 hover:border-primary/30 hover:bg-card/50 hover:shadow-[0_10px_40px_rgba(212,175,55,0.08)] transition-all duration-300 cursor-default"
+              className="group relative bg-card border border-border/25 rounded-2xl p-6 hover:border-primary/35 hover:bg-card/80 hover:shadow-[0_10px_40px_rgba(212,175,55,0.12)] transition-all duration-300 cursor-default shadow-sm"
             >
               {feature.badge && (
                 <div className="absolute top-4 right-4">
-                  <span className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${feature.badge === 'AI Powered' ? 'bg-purple-500/20 text-purple-300 border border-purple-500/30' : 'bg-primary/20 text-primary border border-primary/30'}`}>
+                  <span className={`text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full ${feature.badge === 'AI Powered' ? 'bg-purple-500/15 text-purple-600 dark:text-purple-300 border border-purple-500/30' : 'bg-primary/15 text-primary border border-primary/30'}`}>
                     {feature.badge}
                   </span>
                 </div>

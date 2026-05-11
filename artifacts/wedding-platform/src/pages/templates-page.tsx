@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "wouter";
 import {
   Search, Sparkles, X, ChevronRight, Users, Crown, Star,
-  Flame, Check, Eye, Wand2, Filter, SlidersHorizontal, ArrowLeft
+  Flame, Eye, Wand2, Filter, SlidersHorizontal, Check
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,6 +12,8 @@ import {
   TEMPLATES, CEREMONY_FILTERS, STYLE_FILTERS, REGION_FILTERS,
   TRENDING_TEMPLATE_IDS, getTemplateById, type WeddingTemplate
 } from "@/lib/templates";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
 
 function TemplateCard({ template, onPreview }: { template: WeddingTemplate; onPreview: (t: WeddingTemplate) => void }) {
   const [, setLocation] = useLocation();
@@ -24,21 +26,17 @@ function TemplateCard({ template, onPreview }: { template: WeddingTemplate; onPr
       exit={{ opacity: 0, scale: 0.9 }}
       whileHover={{ y: -6 }}
       transition={{ duration: 0.3 }}
-      className="group relative flex flex-col rounded-2xl overflow-hidden border cursor-pointer"
-      style={{ borderColor: template.accentColor + '33' }}
+      className="group relative flex flex-col rounded-2xl overflow-hidden border cursor-pointer shadow-sm hover:shadow-md transition-shadow"
+      style={{ borderColor: template.accentColor + '44' }}
     >
       {/* Card Visual */}
       <div
         className={`relative h-52 flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br ${template.cardGradient}`}
         onClick={() => onPreview(template)}
       >
-        {/* Decorative pattern */}
         <div className="absolute inset-0 opacity-5 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPjxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIxLjUiIGZpbGw9IndoaXRlIi8+PC9zdmc+')] mix-blend-overlay" />
-
-        {/* Inner border */}
         <div className="absolute inset-3 rounded-xl border border-white/10 pointer-events-none" />
 
-        {/* Emoji hero */}
         <motion.div
           initial={{ scale: 1 }}
           whileHover={{ scale: 1.2, rotate: [0, -10, 10, 0] }}
@@ -53,7 +51,6 @@ function TemplateCard({ template, onPreview }: { template: WeddingTemplate; onPr
         </h3>
         <p className="text-xs text-white/50 mt-1 px-4 text-center line-clamp-1">{template.tagline}</p>
 
-        {/* Hover overlay */}
         <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3">
           <Button
             size="sm"
@@ -73,7 +70,6 @@ function TemplateCard({ template, onPreview }: { template: WeddingTemplate; onPr
           </Button>
         </div>
 
-        {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col gap-1.5">
           {template.isPremium && (
             <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-400/90 text-black">
@@ -94,19 +90,19 @@ function TemplateCard({ template, onPreview }: { template: WeddingTemplate; onPr
       </div>
 
       {/* Card Info */}
-      <div className="p-4 bg-[#0D0D12] border-t border-white/5 flex-1 flex flex-col gap-3">
+      <div className="p-4 bg-card border-t border-border/20 flex-1 flex flex-col gap-3">
         <div className="flex items-center justify-between">
           <div className="flex gap-1.5">
             {template.swatches.slice(0, 4).map((color, i) => (
               <div
                 key={i}
-                className="w-4 h-4 rounded-full border border-black/30 shadow-sm"
+                className="w-4 h-4 rounded-full border border-foreground/10 shadow-sm"
                 style={{ backgroundColor: color }}
                 title={color}
               />
             ))}
           </div>
-          <div className="flex items-center gap-1 text-white/30 text-xs">
+          <div className="flex items-center gap-1 text-foreground/40 text-xs">
             <Users className="h-3 w-3" />
             <span>{template.usedByCount.toLocaleString()} couples</span>
           </div>
@@ -114,7 +110,7 @@ function TemplateCard({ template, onPreview }: { template: WeddingTemplate; onPr
 
         <div className="flex gap-1.5 flex-wrap">
           {template.tags.slice(0, 2).map(tag => (
-            <span key={tag} className="text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-white/50">
+            <span key={tag} className="text-[9px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-primary/8 border border-primary/20 text-primary/70">
               {tag}
             </span>
           ))}
@@ -122,7 +118,7 @@ function TemplateCard({ template, onPreview }: { template: WeddingTemplate; onPr
 
         <Button
           className="w-full rounded-xl h-9 text-sm font-semibold mt-auto"
-          style={{ backgroundColor: template.accentColor + '22', color: template.accentColor, borderColor: template.accentColor + '44' }}
+          style={{ backgroundColor: template.accentColor + '18', color: template.accentColor, borderColor: template.accentColor + '44' }}
           variant="outline"
           onClick={() => setLocation(`/create?template=${template.id}`)}
         >
@@ -141,7 +137,7 @@ function TemplatePreviewModal({ template, onClose, onUse }: { template: WeddingT
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[200] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 md:p-8"
+      className="fixed inset-0 z-[200] bg-foreground/60 backdrop-blur-md flex items-center justify-center p-4 md:p-8"
       onClick={onClose}
     >
       <motion.div
@@ -149,22 +145,22 @@ function TemplatePreviewModal({ template, onClose, onUse }: { template: WeddingT
         animate={{ scale: 1, y: 0 }}
         exit={{ scale: 0.9, y: 20 }}
         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-        className="relative w-full max-w-4xl bg-[#0D0D12] border border-white/10 rounded-3xl overflow-hidden shadow-2xl"
+        className="relative w-full max-w-4xl bg-card border border-border/40 rounded-3xl overflow-hidden shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-white/10">
+        <div className="flex items-center justify-between p-6 border-b border-border/30">
           <div>
             <div className="flex items-center gap-2 mb-1">
               <span className="text-2xl">{template.heroEmoji}</span>
-              <h2 className="text-xl font-serif text-white font-bold">{template.name}</h2>
-              {template.isTrending && <Badge className="bg-red-500/20 text-red-400 border-red-500/30 text-[9px]"><Flame className="h-2.5 w-2.5 mr-1" />Trending</Badge>}
+              <h2 className="text-xl font-serif text-foreground font-bold">{template.name}</h2>
+              {template.isTrending && <Badge className="bg-red-500/15 text-red-500 border-red-500/30 text-[9px]"><Flame className="h-2.5 w-2.5 mr-1" />Trending</Badge>}
             </div>
-            <p className="text-sm text-white/50">{template.tagline}</p>
+            <p className="text-sm text-foreground/50">{template.tagline}</p>
           </div>
           <button
             onClick={onClose}
-            className="h-9 w-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white/60 hover:text-white transition-colors"
+            className="h-9 w-9 rounded-full bg-foreground/8 hover:bg-foreground/15 flex items-center justify-center text-foreground/50 hover:text-foreground transition-colors"
           >
             <X className="h-5 w-5" />
           </button>
@@ -173,24 +169,22 @@ function TemplatePreviewModal({ template, onClose, onUse }: { template: WeddingT
         <div className="grid md:grid-cols-[1fr_280px] gap-0">
           {/* Preview area */}
           <div className="p-6 flex flex-col items-center gap-4 min-h-[400px]">
-            {/* View toggle */}
-            <div className="flex gap-2 bg-white/5 rounded-full p-1 border border-white/10">
+            <div className="flex gap-2 bg-foreground/5 rounded-full p-1 border border-border/30">
               <button
                 onClick={() => setViewMode('mobile')}
-                className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${viewMode === 'mobile' ? 'bg-white/15 text-white' : 'text-white/40 hover:text-white/70'}`}
+                className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${viewMode === 'mobile' ? 'bg-foreground/15 text-foreground' : 'text-foreground/40 hover:text-foreground/70'}`}
               >
                 Mobile
               </button>
               <button
                 onClick={() => setViewMode('desktop')}
-                className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${viewMode === 'desktop' ? 'bg-white/15 text-white' : 'text-white/40 hover:text-white/70'}`}
+                className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all ${viewMode === 'desktop' ? 'bg-foreground/15 text-foreground' : 'text-foreground/40 hover:text-foreground/70'}`}
               >
                 Desktop
               </button>
             </div>
 
-            {/* Simulated preview */}
-            <div className={`relative rounded-2xl overflow-hidden border border-white/10 transition-all duration-500 bg-gradient-to-br ${template.cardGradient} flex flex-col items-center justify-center ${viewMode === 'mobile' ? 'w-[200px] h-[360px]' : 'w-full h-[300px]'}`}>
+            <div className={`relative rounded-2xl overflow-hidden border border-foreground/10 transition-all duration-500 bg-gradient-to-br ${template.cardGradient} flex flex-col items-center justify-center ${viewMode === 'mobile' ? 'w-[200px] h-[360px]' : 'w-full h-[300px]'}`}>
               <div className="absolute inset-4 border border-white/10 rounded-xl pointer-events-none" />
               <div className="text-center space-y-4 px-6">
                 <div className="text-4xl">{template.heroEmoji}</div>
@@ -218,9 +212,9 @@ function TemplatePreviewModal({ template, onClose, onUse }: { template: WeddingT
           </div>
 
           {/* Template details */}
-          <div className="bg-white/3 border-l border-white/8 p-6 flex flex-col gap-5">
+          <div className="bg-foreground/3 border-l border-border/20 p-6 flex flex-col gap-5">
             <div>
-              <p className="text-xs uppercase tracking-widest text-white/40 mb-3">Details</p>
+              <p className="text-xs uppercase tracking-widest text-foreground/40 mb-3">Details</p>
               <div className="space-y-2.5">
                 {[
                   { label: 'Ceremony', value: template.ceremony },
@@ -230,43 +224,43 @@ function TemplatePreviewModal({ template, onClose, onUse }: { template: WeddingT
                   { label: 'Music', value: template.music },
                 ].map(d => (
                   <div key={d.label} className="flex justify-between text-sm">
-                    <span className="text-white/40 capitalize">{d.label}</span>
-                    <span className="text-white/80 capitalize">{d.value}</span>
+                    <span className="text-foreground/40 capitalize">{d.label}</span>
+                    <span className="text-foreground/80 capitalize">{d.value}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             <div>
-              <p className="text-xs uppercase tracking-widest text-white/40 mb-3">Palette</p>
+              <p className="text-xs uppercase tracking-widest text-foreground/40 mb-3">Palette</p>
               <div className="flex gap-2">
                 {template.swatches.map((c, i) => (
                   <div key={i} className="flex flex-col items-center gap-1">
-                    <div className="w-8 h-8 rounded-lg border border-black/20" style={{ backgroundColor: c }} />
-                    <span className="text-[8px] text-white/30">{c}</span>
+                    <div className="w-8 h-8 rounded-lg border border-foreground/10" style={{ backgroundColor: c }} />
+                    <span className="text-[8px] text-foreground/30">{c}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             <div>
-              <p className="text-xs uppercase tracking-widest text-white/40 mb-2">Social proof</p>
+              <p className="text-xs uppercase tracking-widest text-foreground/40 mb-2">Social proof</p>
               <div className="flex items-center gap-2">
-                <Users className="h-4 w-4 text-white/40" />
-                <span className="text-white/60 text-sm">{template.usedByCount.toLocaleString()} couples used this</span>
+                <Users className="h-4 w-4 text-foreground/40" />
+                <span className="text-foreground/60 text-sm">{template.usedByCount.toLocaleString()} couples used this</span>
               </div>
             </div>
 
             <div className="mt-auto space-y-2">
               {template.isPremium && (
-                <div className="text-xs text-amber-400/80 bg-amber-400/10 border border-amber-400/20 rounded-lg px-3 py-2 flex items-center gap-2">
+                <div className="text-xs text-amber-600 dark:text-amber-400/80 bg-amber-50 dark:bg-amber-400/10 border border-amber-200 dark:border-amber-400/20 rounded-lg px-3 py-2 flex items-center gap-2">
                   <Crown className="h-3 w-3 shrink-0" />
                   Premium template — upgrade to unlock
                 </div>
               )}
               <Button
-                className="w-full rounded-xl font-bold text-black"
-                style={{ backgroundColor: template.accentColor }}
+                className="w-full rounded-xl font-bold"
+                style={{ backgroundColor: template.accentColor, color: '#000' }}
                 onClick={onUse}
                 disabled={template.isPremium}
               >
@@ -276,9 +270,8 @@ function TemplatePreviewModal({ template, onClose, onUse }: { template: WeddingT
           </div>
         </div>
 
-        {/* Similar templates note */}
-        <div className="px-6 pb-4 border-t border-white/5 pt-4">
-          <p className="text-xs text-white/30 text-center">
+        <div className="px-6 pb-4 border-t border-border/20 pt-4">
+          <p className="text-xs text-foreground/30 text-center">
             Your details will be applied to this template — name, photos, events, and everything you fill in
           </p>
         </div>
@@ -343,36 +336,36 @@ function AiPickModal({ onClose, onPick }: { onClose: () => void; onPick: (id: st
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[200] bg-black/80 backdrop-blur-md flex items-center justify-center p-4"
+      className="fixed inset-0 z-[200] bg-foreground/60 backdrop-blur-md flex items-center justify-center p-4"
       onClick={onClose}
     >
       <motion.div
         initial={{ scale: 0.9, y: 20 }}
         animate={{ scale: 1, y: 0 }}
         exit={{ scale: 0.9, y: 20 }}
-        className="relative w-full max-w-md bg-[#0D0D12] border border-white/10 rounded-3xl overflow-hidden shadow-2xl p-8"
+        className="relative w-full max-w-md bg-card border border-border/40 rounded-3xl overflow-hidden shadow-2xl p-8"
         onClick={(e) => e.stopPropagation()}
       >
-        <button onClick={onClose} className="absolute top-4 right-4 h-8 w-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white/60 hover:text-white">
+        <button onClick={onClose} className="absolute top-4 right-4 h-8 w-8 rounded-full bg-foreground/8 hover:bg-foreground/15 flex items-center justify-center text-foreground/50 hover:text-foreground">
           <X className="h-4 w-4" />
         </button>
 
         <div className="flex items-center gap-3 mb-8">
-          <div className="h-10 w-10 rounded-xl bg-purple-500/20 flex items-center justify-center">
-            <Wand2 className="h-5 w-5 text-purple-400" />
+          <div className="h-10 w-10 rounded-xl bg-purple-500/15 flex items-center justify-center">
+            <Wand2 className="h-5 w-5 text-purple-500" />
           </div>
           <div>
-            <h3 className="text-white font-serif text-lg">AI Template Picker</h3>
-            <p className="text-xs text-white/40">3 quick questions → perfect match</p>
+            <h3 className="text-foreground font-serif text-lg">AI Template Picker</h3>
+            <p className="text-xs text-foreground/40">3 quick questions → perfect match</p>
           </div>
         </div>
 
         <div className="mb-2 flex gap-1">
           {steps.map((_, i) => (
-            <div key={i} className={`h-1 flex-1 rounded-full transition-all ${i <= step ? 'bg-purple-500' : 'bg-white/10'}`} />
+            <div key={i} className={`h-1 flex-1 rounded-full transition-all ${i <= step ? 'bg-purple-500' : 'bg-foreground/10'}`} />
           ))}
         </div>
-        <p className="text-xs text-white/30 mb-6">Step {step + 1} of {steps.length}</p>
+        <p className="text-xs text-foreground/30 mb-6">Step {step + 1} of {steps.length}</p>
 
         <AnimatePresence mode="wait">
           <motion.div
@@ -382,7 +375,7 @@ function AiPickModal({ onClose, onPick }: { onClose: () => void; onPick: (id: st
             exit={{ x: -30, opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <h4 className="text-white font-serif text-xl mb-6">{current.question}</h4>
+            <h4 className="text-foreground font-serif text-xl mb-6">{current.question}</h4>
             <div className="grid grid-cols-2 gap-2">
               {current.options.map(opt => (
                 <button
@@ -395,7 +388,7 @@ function AiPickModal({ onClose, onPick }: { onClose: () => void; onPick: (id: st
                       pickTemplate();
                     }
                   }}
-                  className={`p-3 rounded-xl text-sm text-left border transition-all hover:border-purple-500/50 hover:bg-purple-500/10 ${answers[current.key as keyof typeof answers] === opt ? 'border-purple-500 bg-purple-500/20 text-white' : 'border-white/10 text-white/60'}`}
+                  className={`p-3 rounded-xl text-sm text-left border transition-all hover:border-purple-500/50 hover:bg-purple-500/8 ${answers[current.key as keyof typeof answers] === opt ? 'border-purple-500 bg-purple-500/15 text-foreground' : 'border-border/30 text-foreground/60'}`}
                 >
                   {opt}
                 </button>
@@ -417,7 +410,6 @@ export default function TemplatesPage() {
   const [sortBy, setSortBy] = useState<'popular' | 'newest' | 'free-first'>('popular');
   const [previewTemplate, setPreviewTemplate] = useState<WeddingTemplate | null>(null);
   const [showAiPicker, setShowAiPicker] = useState(false);
-  const [showFilters, setShowFilters] = useState(false);
 
   const trendingTemplates = useMemo(() =>
     TRENDING_TEMPLATE_IDS.map(id => getTemplateById(id)).filter(Boolean) as WeddingTemplate[],
@@ -444,80 +436,64 @@ export default function TemplatesPage() {
   }, [ceremonyFilter, styleFilter, showPremium, search, sortBy]);
 
   return (
-    <div className="min-h-screen bg-[#080810] text-foreground">
-      {/* Header */}
-      <div className="sticky top-0 z-50 bg-[#080810]/90 backdrop-blur-xl border-b border-white/8">
-        <div className="container mx-auto px-4 py-4 flex items-center gap-4">
-          <button
-            onClick={() => setLocation('/')}
-            className="h-9 w-9 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center text-white/60 hover:text-white transition-colors shrink-0"
+    <div className="min-h-screen bg-background text-foreground">
+      <Navbar />
+
+      {/* Page Hero */}
+      <div
+        className="pt-32 pb-16 relative overflow-hidden"
+        style={{ backgroundColor: 'var(--section-bg)' }}
+      >
+        {/* Decorative orbs */}
+        <div className="absolute top-0 left-1/4 w-[400px] h-[400px] rounded-full blur-[120px] pointer-events-none" style={{ backgroundColor: 'var(--hero-orb-gold)' }} />
+        <div className="absolute top-0 right-1/4 w-[300px] h-[300px] rounded-full blur-[100px] pointer-events-none" style={{ backgroundColor: 'var(--hero-orb-purple)' }} />
+        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+
+        <div className="container mx-auto px-4 max-w-5xl relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center"
           >
-            <ArrowLeft className="h-4 w-4" />
-          </button>
-          <div className="flex items-center gap-2">
-            <span className="font-serif text-2xl font-bold text-primary">Veloria</span>
-            <span className="text-white/20">/</span>
-            <span className="text-white/60 text-sm">Templates</span>
-          </div>
-          <div className="ml-auto flex items-center gap-2">
-            <Button
-              onClick={() => setShowAiPicker(true)}
-              size="sm"
-              className="bg-purple-600 hover:bg-purple-700 text-white rounded-full px-4 gap-2 hidden md:flex"
-            >
-              <Wand2 className="h-4 w-4" />
-              AI Pick For Me
-            </Button>
-            <Link href="/create">
-              <Button size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-4">
-                Start From Scratch
+            <p className="text-primary text-xs uppercase tracking-[0.35em] mb-4 font-semibold">
+              {TEMPLATES.length}+ Stunning Designs
+            </p>
+            <h1 className="text-5xl md:text-7xl font-serif font-bold text-foreground mb-5 leading-tight">
+              Wedding <span className="bg-gradient-to-r from-primary via-amber-400 to-primary bg-clip-text text-transparent italic">Templates</span>
+            </h1>
+            <p className="text-foreground/60 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+              Browse {TEMPLATES.length} cinematic wedding templates. Select one, fill in your details, and go live instantly — no design skills needed.
+            </p>
+
+            <div className="flex flex-col md:flex-row items-center justify-center gap-3 max-w-xl mx-auto">
+              <div className="relative w-full">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-foreground/40" />
+                <Input
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search by style, region, mood..."
+                  className="pl-11 bg-background border-border/40 text-foreground placeholder:text-foreground/30 rounded-full h-12 focus:border-primary/60 w-full shadow-sm"
+                />
+                {search && (
+                  <button onClick={() => setSearch('')} className="absolute right-4 top-1/2 -translate-y-1/2 text-foreground/40 hover:text-foreground">
+                    <X className="h-4 w-4" />
+                  </button>
+                )}
+              </div>
+
+              <Button
+                onClick={() => setShowAiPicker(true)}
+                className="bg-purple-600 hover:bg-purple-700 text-white rounded-full px-6 gap-2 h-12 shrink-0 shadow-md"
+              >
+                <Wand2 className="h-4 w-4" />
+                AI Pick For Me
               </Button>
-            </Link>
-          </div>
+            </div>
+          </motion.div>
         </div>
       </div>
 
       <div className="container mx-auto px-4 py-10 max-w-7xl">
-        {/* Hero */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
-        >
-          <p className="text-primary text-xs uppercase tracking-[0.3em] mb-3 font-medium">Choose Your Style</p>
-          <h1 className="text-4xl md:text-6xl font-serif font-bold text-white mb-4">
-            Find Your Perfect <span className="text-primary italic">Wedding Template</span>
-          </h1>
-          <p className="text-white/50 text-lg max-w-2xl mx-auto">
-            Browse {TEMPLATES.length} stunning templates. Select one, fill your details, and your invitation goes live instantly.
-          </p>
-
-          <div className="flex flex-col md:flex-row items-center justify-center gap-3 mt-8">
-            {/* Search */}
-            <div className="relative w-full max-w-sm">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white/40" />
-              <Input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search templates..."
-                className="pl-10 bg-white/5 border-white/10 text-white placeholder:text-white/30 rounded-full h-11 focus:border-primary/50 w-full"
-              />
-              {search && (
-                <button onClick={() => setSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white">
-                  <X className="h-4 w-4" />
-                </button>
-              )}
-            </div>
-
-            <Button
-              onClick={() => setShowAiPicker(true)}
-              className="bg-purple-600 hover:bg-purple-700 text-white rounded-full px-6 gap-2 h-11 md:hidden"
-            >
-              <Wand2 className="h-4 w-4" />
-              AI Pick For Me
-            </Button>
-          </div>
-        </motion.div>
 
         {/* Trending Section */}
         {!search && ceremonyFilter === 'All' && styleFilter === 'All' && (
@@ -528,16 +504,16 @@ export default function TemplatesPage() {
             className="mb-12"
           >
             <div className="flex items-center gap-3 mb-6">
-              <Flame className="h-5 w-5 text-red-400" />
-              <h2 className="text-xl font-serif text-white font-bold">Trending This Week</h2>
-              <div className="h-px flex-1 bg-white/8" />
+              <Flame className="h-5 w-5 text-red-500" />
+              <h2 className="text-xl font-serif text-foreground font-bold">Trending This Week</h2>
+              <div className="h-px flex-1 bg-border/30" />
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {trendingTemplates.map((template) => (
                 <motion.div
                   key={template.id}
                   whileHover={{ y: -4 }}
-                  className="group relative rounded-2xl overflow-hidden border cursor-pointer"
+                  className="group relative rounded-2xl overflow-hidden border cursor-pointer shadow-sm hover:shadow-md transition-shadow"
                   style={{ borderColor: template.accentColor + '44' }}
                   onClick={() => setPreviewTemplate(template)}
                 >
@@ -549,14 +525,14 @@ export default function TemplatesPage() {
                       <span className="text-white text-xs bg-white/20 backdrop-blur-sm rounded-full px-3 py-1">Preview</span>
                     </div>
                   </div>
-                  <div className="p-3 bg-[#0D0D12]">
+                  <div className="p-3 bg-card border-t border-border/20">
                     <div className="flex justify-between items-center">
                       <div className="flex gap-1">
                         {template.swatches.slice(0, 3).map((c, i) => (
-                          <div key={i} className="w-3 h-3 rounded-full" style={{ backgroundColor: c }} />
+                          <div key={i} className="w-3 h-3 rounded-full border border-foreground/10" style={{ backgroundColor: c }} />
                         ))}
                       </div>
-                      <span className="text-[10px] text-white/30">{template.usedByCount.toLocaleString()}</span>
+                      <span className="text-[10px] text-foreground/40">{template.usedByCount.toLocaleString()}</span>
                     </div>
                   </div>
                 </motion.div>
@@ -566,17 +542,21 @@ export default function TemplatesPage() {
         )}
 
         {/* Filters */}
-        <div className="mb-8 space-y-4">
+        <div className="mb-8 space-y-4 p-5 rounded-2xl bg-card border border-border/25 shadow-sm">
           <div className="flex items-center gap-3 flex-wrap">
-            <div className="flex items-center gap-2 text-white/50 text-sm">
+            <div className="flex items-center gap-2 text-foreground/50 text-sm">
               <Filter className="h-4 w-4" />
-              <span>By Ceremony:</span>
+              <span className="font-medium">By Ceremony:</span>
             </div>
             {CEREMONY_FILTERS.map(f => (
               <button
                 key={f}
                 onClick={() => setCeremonyFilter(f)}
-                className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all border ${ceremonyFilter === f ? 'bg-primary text-primary-foreground border-primary' : 'border-white/10 text-white/50 hover:border-white/30 hover:text-white/80'}`}
+                className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all border ${
+                  ceremonyFilter === f
+                    ? 'bg-primary text-primary-foreground border-primary shadow-sm'
+                    : 'border-border/40 text-foreground/55 hover:border-primary/40 hover:text-primary/80 bg-background'
+                }`}
               >
                 {f}
               </button>
@@ -584,15 +564,19 @@ export default function TemplatesPage() {
           </div>
 
           <div className="flex items-center gap-3 flex-wrap">
-            <div className="flex items-center gap-2 text-white/50 text-sm">
+            <div className="flex items-center gap-2 text-foreground/50 text-sm">
               <SlidersHorizontal className="h-4 w-4" />
-              <span>By Style:</span>
+              <span className="font-medium">By Style:</span>
             </div>
             {STYLE_FILTERS.map(f => (
               <button
                 key={f}
                 onClick={() => setStyleFilter(f)}
-                className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all border ${styleFilter === f ? 'bg-primary text-primary-foreground border-primary' : 'border-white/10 text-white/50 hover:border-white/30 hover:text-white/80'}`}
+                className={`px-4 py-1.5 rounded-full text-xs font-medium transition-all border ${
+                  styleFilter === f
+                    ? 'bg-primary text-primary-foreground border-primary shadow-sm'
+                    : 'border-border/40 text-foreground/55 hover:border-primary/40 hover:text-primary/80 bg-background'
+                }`}
               >
                 {f}
               </button>
@@ -600,25 +584,31 @@ export default function TemplatesPage() {
           </div>
 
           <div className="flex items-center justify-between flex-wrap gap-3">
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => setShowPremium(!showPremium)}
-                className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium transition-all border ${showPremium ? 'border-amber-400/40 text-amber-400 bg-amber-400/10' : 'border-white/10 text-white/50'}`}
-              >
-                <Crown className="h-3 w-3" />
-                {showPremium ? 'Showing Premium' : 'Free Only'}
-              </button>
-            </div>
+            <button
+              onClick={() => setShowPremium(!showPremium)}
+              className={`flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-medium transition-all border ${
+                showPremium
+                  ? 'border-amber-400/50 text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-400/10'
+                  : 'border-border/40 text-foreground/50 bg-background'
+              }`}
+            >
+              <Crown className="h-3 w-3" />
+              {showPremium ? 'Showing Premium' : 'Free Only'}
+            </button>
 
             <div className="flex items-center gap-2">
-              <span className="text-white/40 text-xs">{filteredTemplates.length} templates</span>
-              <span className="text-white/20">|</span>
-              <span className="text-white/40 text-xs">Sort:</span>
+              <span className="text-foreground/40 text-xs font-medium">{filteredTemplates.length} templates</span>
+              <span className="text-foreground/20">|</span>
+              <span className="text-foreground/40 text-xs">Sort:</span>
               {(['popular', 'newest', 'free-first'] as const).map(s => (
                 <button
                   key={s}
                   onClick={() => setSortBy(s)}
-                  className={`text-xs px-3 py-1 rounded-full transition-all ${sortBy === s ? 'bg-white/10 text-white' : 'text-white/40 hover:text-white/60'}`}
+                  className={`text-xs px-3 py-1 rounded-full transition-all border ${
+                    sortBy === s
+                      ? 'bg-foreground/10 text-foreground border-border/40'
+                      : 'text-foreground/40 hover:text-foreground/70 border-transparent'
+                  }`}
                 >
                   {s === 'popular' ? 'Popular' : s === 'newest' ? 'Newest' : 'Free First'}
                 </button>
@@ -636,9 +626,13 @@ export default function TemplatesPage() {
               className="text-center py-24"
             >
               <div className="text-5xl mb-4">🔍</div>
-              <h3 className="text-xl font-serif text-white mb-2">No templates found</h3>
-              <p className="text-white/40 mb-6">Try adjusting your filters or search query</p>
-              <Button onClick={() => { setSearch(''); setCeremonyFilter('All'); setStyleFilter('All'); }} variant="outline" className="border-white/20 text-white rounded-full">
+              <h3 className="text-xl font-serif text-foreground mb-2">No templates found</h3>
+              <p className="text-foreground/45 mb-6">Try adjusting your filters or search query</p>
+              <Button
+                onClick={() => { setSearch(''); setCeremonyFilter('All'); setStyleFilter('All'); }}
+                variant="outline"
+                className="border-border/40 text-foreground rounded-full"
+              >
                 Clear All Filters
               </Button>
             </motion.div>
@@ -663,21 +657,24 @@ export default function TemplatesPage() {
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-20 text-center bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 border border-primary/20 rounded-3xl p-12"
+          className="mt-20 text-center rounded-3xl p-12 border border-primary/20 shadow-[0_0_60px_rgba(212,175,55,0.08)]"
+          style={{ backgroundColor: 'var(--section-bg)' }}
         >
-          <Star className="h-8 w-8 text-primary mx-auto mb-4 opacity-60" />
-          <h2 className="text-3xl font-serif text-white mb-3">Can't Find the Right One?</h2>
-          <p className="text-white/50 mb-6 max-w-md mx-auto">Start with a blank canvas and customize everything — theme, colors, music, and more.</p>
+          <div className="w-14 h-14 rounded-full bg-primary/15 border border-primary/25 flex items-center justify-center mx-auto mb-5">
+            <Star className="h-6 w-6 text-primary" />
+          </div>
+          <h2 className="text-3xl font-serif text-foreground mb-3 font-bold">Can't Find the Right One?</h2>
+          <p className="text-foreground/55 mb-8 max-w-md mx-auto">Start with a blank canvas and customize everything — theme, colors, music, and more.</p>
           <div className="flex flex-col md:flex-row gap-3 justify-center">
             <Link href="/create">
-              <Button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-8 py-6 h-auto text-base">
+              <Button className="bg-gradient-to-r from-primary to-amber-500 text-primary-foreground hover:opacity-90 rounded-full px-8 py-6 h-auto text-base font-semibold shadow-md">
                 Start From Scratch <ChevronRight className="h-5 w-5 ml-2" />
               </Button>
             </Link>
             <Button
               onClick={() => setShowAiPicker(true)}
               variant="outline"
-              className="border-purple-500/40 text-purple-400 hover:bg-purple-500/10 rounded-full px-8 py-6 h-auto text-base"
+              className="border-purple-500/40 text-purple-600 dark:text-purple-400 hover:bg-purple-500/8 rounded-full px-8 py-6 h-auto text-base"
             >
               <Wand2 className="h-5 w-5 mr-2" />
               Let AI Choose For Me
@@ -685,6 +682,8 @@ export default function TemplatesPage() {
           </div>
         </motion.div>
       </div>
+
+      <Footer />
 
       {/* Preview Modal */}
       <AnimatePresence>

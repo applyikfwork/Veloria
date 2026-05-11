@@ -52,7 +52,7 @@ export default function Pricing() {
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="bg-card/30 backdrop-blur-sm border border-white/10 rounded-3xl p-8 h-[90%]"
+            className="bg-card border border-border/30 rounded-3xl p-8 h-[90%] shadow-sm"
           >
             <div className="mb-8">
               <h3 className="text-2xl font-serif font-bold text-foreground mb-2">Essential</h3>
@@ -86,7 +86,7 @@ export default function Pricing() {
               ))}
             </ul>
 
-            <Button variant="outline" className="w-full border-white/20 hover:bg-white/5 rounded-full h-12" data-testid="button-plan-free">
+            <Button variant="outline" className="w-full border-border/40 hover:bg-foreground/5 rounded-full h-12" data-testid="button-plan-free">
               Get Started Free
             </Button>
           </motion.div>
@@ -96,7 +96,7 @@ export default function Pricing() {
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="bg-gradient-to-b from-[#1A1A24] to-card rounded-3xl p-1 relative overflow-hidden shadow-[0_20px_50px_rgba(212,175,55,0.15)] transform md:-translate-y-4"
+            className="bg-gradient-to-b from-primary/20 to-card rounded-3xl p-1 relative overflow-hidden shadow-[0_20px_50px_rgba(212,175,55,0.18)] transform md:-translate-y-4"
           >
             {/* Animated border gradient */}
             <div className="absolute inset-0 bg-gradient-to-br from-primary via-transparent to-primary opacity-50 pointer-events-none"></div>

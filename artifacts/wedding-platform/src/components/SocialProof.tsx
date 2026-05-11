@@ -130,15 +130,15 @@ export default function SocialProof() {
               <div className="absolute -top-3 left-4 bg-primary text-primary-foreground text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-[0_0_10px_rgba(212,175,55,0.5)]">
                 After — Veloria
               </div>
-              <div className="rounded-2xl border border-primary/30 bg-gradient-to-br from-[#1A1A24] to-card p-8 h-64 flex flex-col items-center justify-center text-center space-y-3 shadow-[0_0_40px_rgba(212,175,55,0.1)]">
+              <div className="rounded-2xl border border-primary/30 bg-gradient-to-br from-primary/8 to-card p-8 h-64 flex flex-col items-center justify-center text-center space-y-3 shadow-[0_0_40px_rgba(212,175,55,0.1)]">
                 <div className="w-16 h-16 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center shadow-[0_0_20px_rgba(212,175,55,0.2)]">
                   <Heart className="w-6 h-6 text-primary fill-primary/40" />
                 </div>
-                <h3 className="text-xl font-serif text-white">Priya <span className="text-primary">♥</span> Arjun</h3>
+                <h3 className="text-xl font-serif text-foreground">Priya <span className="text-primary">♥</span> Arjun</h3>
                 <div className="flex gap-2 flex-wrap justify-center">
                   <span className="text-xs bg-primary/10 text-primary border border-primary/20 px-2 py-0.5 rounded-full">Live Countdown</span>
-                  <span className="text-xs bg-white/5 text-white/60 border border-white/10 px-2 py-0.5 rounded-full">Music ♪</span>
-                  <span className="text-xs bg-white/5 text-white/60 border border-white/10 px-2 py-0.5 rounded-full">RSVP</span>
+                  <span className="text-xs bg-foreground/6 text-foreground/60 border border-foreground/12 px-2 py-0.5 rounded-full">Music ♪</span>
+                  <span className="text-xs bg-foreground/6 text-foreground/60 border border-foreground/12 px-2 py-0.5 rounded-full">RSVP</span>
                 </div>
                 <p className="text-xs text-primary/60 italic">Cinematic. Interactive. Unforgettable.</p>
               </div>

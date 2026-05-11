@@ -33,7 +33,7 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section id="how-it-works" className="py-24 bg-[#06060A] relative overflow-hidden">
+    <section id="how-it-works" className="py-24 relative overflow-hidden" style={{ backgroundColor: 'var(--section-bg)' }}>
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
 
       <div className="container mx-auto px-4 md:px-6">

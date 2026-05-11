@@ -122,10 +122,10 @@ export default function Templates() {
                 <div className="p-4" style={{ backgroundColor: 'var(--section-bg-card)' }}>
                   <div className="flex items-center justify-between">
                     <div>
-                      <p className="text-white text-sm font-medium">{template.name}</p>
-                      <p className="text-white/30 text-xs capitalize">{template.region.replace('-', ' ')}</p>
+                      <p className="text-foreground text-sm font-medium">{template.name}</p>
+                      <p className="text-foreground/40 text-xs capitalize">{template.region.replace('-', ' ')}</p>
                     </div>
-                    <div className="flex items-center gap-1 text-white/30 text-xs">
+                    <div className="flex items-center gap-1 text-foreground/40 text-xs">
                       <Star className="h-3 w-3" />
                       <span>{(template.usedByCount / 1000).toFixed(1)}k</span>
                     </div>
@@ -151,7 +151,7 @@ export default function Templates() {
               Browse All {TEMPLATES.length} Templates <ArrowRight className="ml-2 h-5 w-5" />
             </Button>
           </Link>
-          <p className="text-white/30 text-sm mt-4">Select a template → Fill your details → Go live in minutes</p>
+          <p className="text-foreground/45 text-sm mt-4">Select a template → Fill your details → Go live in minutes</p>
         </motion.div>
       </div>
     </section>
