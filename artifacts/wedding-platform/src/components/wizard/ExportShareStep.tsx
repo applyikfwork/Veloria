@@ -49,7 +49,7 @@ export default function ExportShareStep({ formData, onNext, onBack, savedSlug, i
 
   const defaultSlug = `${(formData.bride?.name || "priya").toLowerCase()}weds${(formData.groom?.name || "arjun").toLowerCase()}`.replace(/[^a-z0-9]/gi, '');
   const displaySlug = savedSlug || defaultSlug;
-  const url = `vivah.in/i/${displaySlug}`;
+  const url = `veloria.in/i/${displaySlug}`;
 
   useEffect(() => {
     if (savedSlug) {

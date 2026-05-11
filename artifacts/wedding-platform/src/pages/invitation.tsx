@@ -16,7 +16,12 @@ import {
   Trophy,
   ArrowRight,
   Instagram,
-  ChevronLeft
+  ChevronLeft,
+  Gift,
+  ShoppingBag,
+  Video,
+  ExternalLink,
+  Eye
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";
@@ -147,6 +152,16 @@ export default function InvitationPage() {
     }
 
     fetchData();
+  }, [slug]);
+
+  // Track page view silently
+  useEffect(() => {
+    if (!slug) return;
+    supabase.from('invitations').select('id').eq('slug', slug).single().then(({ data }) => {
+      if (data?.id) {
+        supabase.from('invitation_views').insert({ invitation_id: data.id, viewed_at: new Date().toISOString(), referrer: document.referrer || null }).then(() => {});
+      }
+    });
   }, [slug]);
 
   // Handle Translation
@@ -311,6 +326,36 @@ export default function InvitationPage() {
 
   return (
     <div className="min-h-screen bg-[#0B0B0F] text-foreground font-sans selection:bg-primary/30">
+      {/* Animated Entrance — Floating Petals */}
+      <div className="fixed inset-0 pointer-events-none z-[100] overflow-hidden" aria-hidden>
+        {[...Array(18)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute text-primary/60 select-none"
+            style={{
+              left: `${Math.random() * 100}%`,
+              fontSize: `${Math.random() * 18 + 10}px`,
+            }}
+            initial={{ y: -40, opacity: 0, rotate: 0 }}
+            animate={{
+              y: typeof window !== 'undefined' ? window.innerHeight + 60 : 900,
+              opacity: [0, 0.8, 0.6, 0],
+              rotate: Math.random() > 0.5 ? 360 : -360,
+              x: [0, Math.random() * 80 - 40, Math.random() * 80 - 40, 0],
+            }}
+            transition={{
+              duration: Math.random() * 6 + 5,
+              delay: Math.random() * 3,
+              ease: "easeInOut",
+              repeat: Infinity,
+              repeatDelay: Math.random() * 8 + 4,
+            }}
+          >
+            {['🌸', '🌹', '✨', '❤️', '🌺', '💫'][i % 6]}
+          </motion.div>
+        ))}
+      </div>
+
       {/* Personalized Guest Greeting */}
       <AnimatePresence>
         {guestName && (
@@ -794,6 +839,116 @@ export default function InvitationPage() {
           </div>
         </div>
       </section>
+
+      {/* Gift Registry Section */}
+      {invitation.gift_registry?.enabled && (
+        <section className="py-20 px-6 bg-gradient-to-b from-black to-primary/5">
+          <div className="max-w-2xl mx-auto text-center space-y-8">
+            <div className="space-y-4">
+              <div className="h-14 w-14 rounded-full bg-primary/20 border border-primary/30 flex items-center justify-center mx-auto">
+                <Gift className="h-7 w-7 text-primary" />
+              </div>
+              <h2 className="text-4xl font-serif text-white">Our Gift Registry</h2>
+              <p className="text-muted-foreground max-w-lg mx-auto">
+                Your presence is the greatest gift. But if you'd like to bless us with something, here are our wishlists:
+              </p>
+            </div>
+
+            <div className="grid gap-4">
+              {invitation.gift_registry.amazon && (
+                <motion.a
+                  whileHover={{ scale: 1.02 }}
+                  href={invitation.gift_registry.amazon}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-4 p-5 rounded-2xl bg-[#FF9900]/10 border border-[#FF9900]/30 hover:bg-[#FF9900]/20 transition-all text-left group"
+                >
+                  <div className="h-12 w-12 rounded-xl bg-[#FF9900]/20 flex items-center justify-center shrink-0">
+                    <ShoppingBag className="h-6 w-6 text-[#FF9900]" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-white font-semibold">Amazon Wishlist</h4>
+                    <p className="text-xs text-white/40">View our curated gift list</p>
+                  </div>
+                  <ExternalLink className="h-4 w-4 text-white/30 group-hover:text-[#FF9900] transition-colors" />
+                </motion.a>
+              )}
+              {invitation.gift_registry.flipkart && (
+                <motion.a
+                  whileHover={{ scale: 1.02 }}
+                  href={invitation.gift_registry.flipkart}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-4 p-5 rounded-2xl bg-[#2874F0]/10 border border-[#2874F0]/30 hover:bg-[#2874F0]/20 transition-all text-left group"
+                >
+                  <div className="h-12 w-12 rounded-xl bg-[#2874F0]/20 flex items-center justify-center shrink-0">
+                    <ShoppingBag className="h-6 w-6 text-[#2874F0]" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-white font-semibold">Flipkart Wishlist</h4>
+                    <p className="text-xs text-white/40">View our curated gift list</p>
+                  </div>
+                  <ExternalLink className="h-4 w-4 text-white/30 group-hover:text-[#2874F0] transition-colors" />
+                </motion.a>
+              )}
+              {invitation.gift_registry.custom && (
+                <motion.a
+                  whileHover={{ scale: 1.02 }}
+                  href={invitation.gift_registry.custom}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-4 p-5 rounded-2xl bg-primary/10 border border-primary/30 hover:bg-primary/20 transition-all text-left group"
+                >
+                  <div className="h-12 w-12 rounded-xl bg-primary/20 flex items-center justify-center shrink-0">
+                    <Gift className="h-6 w-6 text-primary" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-white font-semibold">{invitation.gift_registry.customLabel || 'Our Registry'}</h4>
+                    <p className="text-xs text-white/40">View our wishlist</p>
+                  </div>
+                  <ExternalLink className="h-4 w-4 text-white/30 group-hover:text-primary transition-colors" />
+                </motion.a>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Live Stream Section */}
+      {invitation.live_stream?.enabled && invitation.live_stream?.url && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mx-6 mb-8 rounded-2xl overflow-hidden border border-blue-500/30 bg-gradient-to-r from-blue-500/10 via-cyan-500/10 to-blue-500/10 backdrop-blur-md"
+        >
+          <div className="p-6 flex flex-col md:flex-row items-center gap-4">
+            <div className="flex items-center gap-4 flex-1">
+              <div className="h-12 w-12 rounded-xl bg-blue-500/20 flex items-center justify-center shrink-0">
+                <Video className="h-6 w-6 text-blue-400" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-[10px] uppercase tracking-widest text-blue-400 font-bold bg-blue-500/20 border border-blue-500/30 px-2 py-0.5 rounded-full">Live</span>
+                  <h3 className="text-white font-semibold text-lg">Join Us Live</h3>
+                </div>
+                <p className="text-white/50 text-sm">Can't attend in person? Watch our ceremony live!</p>
+              </div>
+            </div>
+            <a
+              href={invitation.live_stream.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full md:w-auto"
+            >
+              <Button className="w-full md:w-auto bg-blue-500 hover:bg-blue-600 text-white rounded-full px-8 flex items-center gap-2 shadow-lg shadow-blue-500/30">
+                <Eye className="h-4 w-4" />
+                Watch Live Stream
+              </Button>
+            </a>
+          </div>
+        </motion.div>
+      )}
 
       {/* Hashtag Section */}
       <section className="py-24 px-6 text-center">

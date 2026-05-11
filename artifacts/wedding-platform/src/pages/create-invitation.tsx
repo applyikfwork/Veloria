@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLocation } from "wouter";
-import { ChevronLeft, X, Save, Eye } from "lucide-react";
+import { ChevronLeft, X, Save, Eye, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import WeddingTypeStep from "@/components/wizard/WeddingTypeStep";
@@ -21,6 +21,19 @@ import { useToast } from "@/hooks/use-toast";
 import { saveInvitation } from "@/lib/saveInvitation";
 
 const TOTAL_STEPS = 10;
+
+const STEP_NAMES = [
+  "Wedding Type",
+  "Couple Details",
+  "Family Details",
+  "Events",
+  "Design Style",
+  "Music & Voice",
+  "Photos",
+  "RSVP & Extras",
+  "Live Preview",
+  "Export & Share",
+];
 
 export default function CreateInvitationPage() {
   const [, setLocation] = useLocation();
@@ -46,13 +59,39 @@ export default function CreateInvitationPage() {
       groomGrandparents: ["", ""],
       blessingQuote: "",
       familyMessage: "",
-      photos: []
+      photos: [] as (string | null)[],
     },
-    events: [],
+    events: [] as any[],
     designTheme: "",
     music: { enabled: true, selectedMusic: "romantic", selectedVoice: "male-luxury" },
-    photos: { couple: [], preWedding: [], family: [], video: null, createSlideshow: true },
-    rsvp: { enabled: true, message: "We can't wait to celebrate with you!", deadline: "", foodPreferences: ["veg"], whatsappEnabled: true, qrEnabled: false }
+    photos: {
+      couple: [] as (string | null)[],
+      preWedding: [] as (string | null)[],
+      family: [] as (string | null)[],
+      video: null as string | null,
+      createSlideshow: true,
+      captions: {} as Record<string, string>,
+    },
+    rsvp: {
+      enabled: true,
+      message: "We can't wait to celebrate with you!",
+      deadline: "",
+      foodPreferences: ["veg"],
+      whatsappEnabled: true,
+      qrEnabled: false,
+    },
+    giftRegistry: {
+      enabled: false,
+      amazon: "",
+      flipkart: "",
+      custom: "",
+      customLabel: "",
+    },
+    liveStream: {
+      enabled: false,
+      url: "",
+      platform: "youtube",
+    },
   });
 
   const handleSave = async (customSlug?: string) => {
@@ -84,14 +123,6 @@ export default function CreateInvitationPage() {
   };
 
   const nextStep = () => {
-    if (currentStep === TOTAL_STEPS - 1) {
-      // If we're on step 9 (Live Preview) and clicking next, we're going to step 10 (Export)
-      // We might want to save here or just let the user click "Finish" on step 10
-      setDirection(1);
-      setCurrentStep((prev) => prev + 1);
-      return;
-    }
-
     if (currentStep < TOTAL_STEPS) {
       setDirection(1);
       setCurrentStep((prev) => prev + 1);
@@ -138,7 +169,7 @@ export default function CreateInvitationPage() {
         return (
           <CoupleDetailsStep
             data={{ bride: formData.bride, groom: formData.groom, loveStory: formData.loveStory }}
-            onChange={(val) => setFormData(prev => ({ ...prev, ...val }))}
+            onChange={(val) => setFormData((prev) => ({ ...prev, ...val }))}
             onNext={nextStep}
             onBack={prevStep}
           />
@@ -195,6 +226,10 @@ export default function CreateInvitationPage() {
             onChange={(val) => updateFormData("rsvp", val)}
             onNext={nextStep}
             onBack={prevStep}
+            giftRegistry={formData.giftRegistry}
+            onGiftRegistryChange={(val) => updateFormData("giftRegistry", val)}
+            liveStream={formData.liveStream}
+            onLiveStreamChange={(val) => updateFormData("liveStream", val)}
           />
         );
       case 9:
@@ -202,7 +237,7 @@ export default function CreateInvitationPage() {
           <LivePreviewStep
             data={formData}
             formData={formData}
-            onChange={(val) => setFormData(prev => ({ ...prev, ...val }))}
+            onChange={(val) => setFormData((prev) => ({ ...prev, ...val }))}
             onNext={nextStep}
             onBack={prevStep}
           />
@@ -223,22 +258,6 @@ export default function CreateInvitationPage() {
     }
   };
 
-  const getStepTitle = (step: number) => {
-    switch (step) {
-      case 1: return "Wedding Type";
-      case 2: return "Couple Details";
-      case 3: return "Family Details";
-      case 4: return "Event Details";
-      case 5: return "Design Style";
-      case 6: return "Music & Voice";
-      case 7: return "Photo Gallery";
-      case 8: return "RSVP Settings";
-      case 9: return "Live Preview";
-      case 10: return "Export & Share";
-      default: return "Create Invitation";
-    }
-  };
-
   return (
     <div className="min-h-screen bg-[#0B0B0F] text-foreground font-sans relative overflow-hidden flex flex-col">
       {/* Floating particle background */}
@@ -247,19 +266,19 @@ export default function CreateInvitationPage() {
           <motion.div
             key={i}
             className="absolute w-1 h-1 bg-primary/40 rounded-full"
-            initial={{ 
-              x: Math.random() * 100 + "%", 
+            initial={{
+              x: Math.random() * 100 + "%",
               y: Math.random() * 100 + "%",
-              opacity: Math.random() * 0.5 + 0.2
+              opacity: Math.random() * 0.5 + 0.2,
             }}
             animate={{
               y: [null, Math.random() * 100 + "%"],
-              opacity: [0.2, 0.5, 0.2]
+              opacity: [0.2, 0.5, 0.2],
             }}
             transition={{
               duration: Math.random() * 20 + 10,
               repeat: Infinity,
-              ease: "linear"
+              ease: "linear",
             }}
           />
         ))}
@@ -279,8 +298,10 @@ export default function CreateInvitationPage() {
             <ChevronLeft className="h-6 w-6" />
           </Button>
           <div>
-            <p className="text-xs uppercase tracking-widest text-primary font-medium">Step {currentStep} of {TOTAL_STEPS}</p>
-            <h1 className="text-lg font-serif">Create Your Invitation</h1>
+            <p className="text-xs uppercase tracking-widest text-primary font-medium">
+              Step {currentStep} of {TOTAL_STEPS}
+            </p>
+            <h1 className="text-lg font-serif">{STEP_NAMES[currentStep - 1]}</h1>
           </div>
         </div>
         <Button
@@ -294,11 +315,40 @@ export default function CreateInvitationPage() {
         </Button>
       </header>
 
-      {/* Progress Bar */}
-      <div className="relative z-10 px-0 md:mr-[340px]">
-        <Progress 
-          value={(currentStep / TOTAL_STEPS) * 100} 
-          className="h-1 rounded-none bg-white/5" 
+      {/* Progress Bar with step indicators */}
+      <div className="relative z-10 px-6 py-3 bg-black/10 border-b border-white/5 md:mr-[340px]">
+        <div className="flex items-center justify-between mb-2">
+          {STEP_NAMES.map((name, i) => {
+            const stepNum = i + 1;
+            const isCompleted = stepNum < currentStep;
+            const isCurrent = stepNum === currentStep;
+            return (
+              <div
+                key={i}
+                className="flex flex-col items-center gap-1 cursor-pointer"
+                onClick={() => stepNum < currentStep && setCurrentStep(stepNum)}
+              >
+                <div
+                  className={`w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold transition-all ${
+                    isCompleted
+                      ? "bg-primary text-primary-foreground"
+                      : isCurrent
+                      ? "bg-primary/30 border-2 border-primary text-primary"
+                      : "bg-white/10 text-white/30"
+                  }`}
+                >
+                  {isCompleted ? <Check className="h-3 w-3" /> : stepNum}
+                </div>
+                <span className={`text-[8px] uppercase tracking-wider hidden md:block transition-colors ${isCurrent ? "text-primary" : isCompleted ? "text-primary/60" : "text-white/20"}`}>
+                  {name.split(" ")[0]}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+        <Progress
+          value={(currentStep / TOTAL_STEPS) * 100}
+          className="h-1 rounded-none bg-white/5"
         />
       </div>
 
@@ -336,15 +386,15 @@ export default function CreateInvitationPage() {
         </Button>
       </div>
 
-      <LivePreviewPanel 
-        formData={formData} 
-        isOpen={previewOpen} 
-        onClose={() => setPreviewOpen(false)} 
+      <LivePreviewPanel
+        formData={formData}
+        isOpen={previewOpen}
+        onClose={() => setPreviewOpen(false)}
       />
 
-      <AuthModal 
-        isOpen={authModalOpen} 
-        onClose={() => setAuthModalOpen(false)} 
+      <AuthModal
+        isOpen={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
         onSuccess={() => {
           setAuthModalOpen(false);
           handleSave();
@@ -374,7 +424,11 @@ export default function CreateInvitationPage() {
           className="bg-primary text-primary-foreground hover:bg-primary/90 px-8 rounded-full shadow-lg shadow-primary/20 transition-all active:scale-95"
           data-testid="button-save-continue"
         >
-          {currentStep === TOTAL_STEPS ? (isSaving ? "Saving..." : "Finish") : "Save & Continue"}
+          {currentStep === TOTAL_STEPS
+            ? isSaving
+              ? "Saving..."
+              : "Finish"
+            : "Save & Continue"}
           <Save className="ml-2 h-4 w-4" />
         </Button>
       </footer>
