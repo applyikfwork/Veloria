@@ -67,62 +67,72 @@
   --radius-xl: calc(var(--radius) + 4px);
 }
 
-/* LIGHT MODE */
+/* LIGHT ROYAL MODE (default) */
 :root {
-  --button-outline: rgba(0,0,0, .10);
-  --badge-outline: rgba(0,0,0, .05);
+  --button-outline: rgba(0,0,0, .12);
+  --badge-outline: rgba(0,0,0, .06);
 
-  /* Automatic computation of border around primary / danger buttons */
-  --opaque-button-border-intensity: -8; /* In terms of percentages */
+  --opaque-button-border-intensity: -8;
 
-  /* Backgrounds applied on top of other backgrounds when hovered/active */
   --elevate-1: rgba(0,0,0, .03);
-  --elevate-2: rgba(0,0,0, .08);
+  --elevate-2: rgba(0,0,0, .07);
 
-  --background: 240 15% 5%; /* #0B0B0F */
-  --foreground: 37 72% 89%; /* #F7E7CE */
-  
-  --border: 46 65% 52%; /* #D4AF37 */
-  
-  --card: 240 15% 7%;
-  --card-foreground: 37 72% 89%;
-  --card-border: 46 65% 52%;
-  
-  --sidebar: 240 15% 5%;
-  --sidebar-foreground: 37 72% 89%;
-  --sidebar-border: 46 65% 52%;
+  /* Warm parchment palette */
+  --background: 42 73% 95%;        /* #FAF5E9 warm ivory */
+  --foreground: 20 89% 6%;          /* #1A0A02 deep mahogany */
+
+  --border: 46 55% 68%;             /* soft gold */
+
+  --card: 42 100% 97%;              /* #FFF9EF warm white */
+  --card-foreground: 20 89% 6%;
+  --card-border: 46 55% 68%;
+
+  --sidebar: 42 73% 95%;
+  --sidebar-foreground: 20 89% 6%;
+  --sidebar-border: 46 55% 68%;
   --sidebar-primary: 46 65% 52%;
-  --sidebar-primary-foreground: 240 15% 5%;
+  --sidebar-primary-foreground: 42 73% 95%;
   --sidebar-accent: 0 68% 17%;
-  --sidebar-accent-foreground: 37 72% 89%;
+  --sidebar-accent-foreground: 42 73% 95%;
   --sidebar-ring: 46 65% 52%;
-  
-  --popover: 240 15% 7%;
-  --popover-foreground: 37 72% 89%;
-  --popover-border: 46 65% 52%;
-  
-  --primary: 46 65% 52%; /* #D4AF37 */
-  --primary-foreground: 240 15% 5%; /* #0B0B0F */
-  
-  --secondary: 0 68% 17%; /* #4A0E0E */
-  --secondary-foreground: 37 72% 89%; /* #F7E7CE */
-  
-  --muted: 240 15% 15%;
-  --muted-foreground: 37 72% 70%;
-  
-  --accent: 351 35% 57%; /* #B76E79 */
-  --accent-foreground: 240 15% 5%;
-  
-  --destructive: 0 84% 60%;
+
+  --popover: 42 100% 97%;
+  --popover-foreground: 20 89% 6%;
+  --popover-border: 46 55% 68%;
+
+  --primary: 46 65% 52%;            /* #D4AF37 gold */
+  --primary-foreground: 20 89% 6%;  /* dark on gold */
+
+  --secondary: 40 30% 90%;          /* warm parchment secondary */
+  --secondary-foreground: 20 89% 6%;
+
+  --muted: 40 45% 88%;              /* warm beige */
+  --muted-foreground: 38 45% 32%;   /* medium brown */
+
+  --accent: 351 35% 57%;            /* rose gold */
+  --accent-foreground: 20 89% 6%;
+
+  --destructive: 0 84% 50%;
   --destructive-foreground: 0 0% 100%;
-  
-  --input: 46 65% 20%;
+
+  --input: 42 40% 88%;              /* warm input bg */
   --ring: 46 65% 52%;
   --chart-1: 46 65% 52%;
   --chart-2: 0 68% 17%;
   --chart-3: 351 35% 57%;
   --chart-4: 28 90% 48%;
   --chart-5: 273 67% 39%;
+
+  /* Section background system */
+  --section-bg: #F5EDD8;
+  --section-bg-deep: #EDE0C0;
+  --section-bg-card: #FFF5E4;
+  --hero-bg: #F9F2E0;
+  --hero-vignette: #F9F2E0;
+  --hero-orb-gold: rgba(212,175,55,0.22);
+  --hero-orb-purple: rgba(150,50,100,0.08);
+  --hero-orb-saffron: rgba(210,90,20,0.07);
+  --hero-grid: rgba(180,130,30,0.07);
 
   --app-font-sans: 'DM Sans', sans-serif;
   --app-font-serif: 'Cormorant Garamond', serif;
@@ -174,21 +184,20 @@
   --button-outline: rgba(255,255,255, .10);
   --badge-outline: rgba(255,255,255, .05);
 
-  --opaque-button-border-intensity: 9;  /* In terms of percentages */
+  --opaque-button-border-intensity: 9;
 
-  /* Backgrounds applied on top of other backgrounds when hovered/active */
   --elevate-1: rgba(255,255,255, .04);
   --elevate-2: rgba(255,255,255, .09);
 
-  --background: 240 15% 5%; /* #0B0B0F */
-  --foreground: 37 72% 89%; /* #F7E7CE */
-  
-  --border: 46 65% 52%; /* #D4AF37 */
-  
+  --background: 240 15% 5%;
+  --foreground: 37 72% 89%;
+
+  --border: 46 65% 52%;
+
   --card: 240 15% 7%;
   --card-foreground: 37 72% 89%;
   --card-border: 46 65% 52%;
-  
+
   --sidebar: 240 15% 5%;
   --sidebar-foreground: 37 72% 89%;
   --sidebar-border: 46 65% 52%;
@@ -197,26 +206,26 @@
   --sidebar-accent: 0 68% 17%;
   --sidebar-accent-foreground: 37 72% 89%;
   --sidebar-ring: 46 65% 52%;
-  
+
   --popover: 240 15% 7%;
   --popover-foreground: 37 72% 89%;
   --popover-border: 46 65% 52%;
-  
-  --primary: 46 65% 52%; /* #D4AF37 */
-  --primary-foreground: 240 15% 5%; /* #0B0B0F */
-  
-  --secondary: 0 68% 17%; /* #4A0E0E */
-  --secondary-foreground: 37 72% 89%; /* #F7E7CE */
-  
+
+  --primary: 46 65% 52%;
+  --primary-foreground: 240 15% 5%;
+
+  --secondary: 0 68% 17%;
+  --secondary-foreground: 37 72% 89%;
+
   --muted: 240 15% 15%;
   --muted-foreground: 37 72% 70%;
-  
-  --accent: 351 35% 57%; /* #B76E79 */
+
+  --accent: 351 35% 57%;
   --accent-foreground: 240 15% 5%;
-  
+
   --destructive: 0 84% 60%;
   --destructive-foreground: 0 0% 100%;
-  
+
   --input: 46 65% 20%;
   --ring: 46 65% 52%;
   --chart-1: 46 65% 52%;
@@ -224,6 +233,17 @@
   --chart-3: 351 35% 57%;
   --chart-4: 28 90% 48%;
   --chart-5: 273 67% 39%;
+
+  /* Dark section backgrounds */
+  --section-bg: #08080C;
+  --section-bg-deep: #040406;
+  --section-bg-card: #0D0D12;
+  --hero-bg: #050508;
+  --hero-vignette: #050508;
+  --hero-orb-gold: rgba(212,175,55,0.08);
+  --hero-orb-purple: rgba(107,33,168,0.10);
+  --hero-orb-saffron: rgba(232,114,12,0.06);
+  --hero-grid: rgba(212,175,55,0.03);
 
   --shadow-2xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00);
   --shadow-xs: 0px 2px 0px 0px hsl(202.8169 89.1213% 53.1373% / 0.00);

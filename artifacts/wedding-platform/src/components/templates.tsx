@@ -9,7 +9,7 @@ const FEATURED = TEMPLATES.slice(0, 6);
 
 export default function Templates() {
   return (
-    <section id="templates" className="py-24 bg-[#08080C] relative overflow-hidden">
+    <section id="templates" className="py-24 relative overflow-hidden" style={{ backgroundColor: 'var(--section-bg)' }}>
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
 
       <div className="container mx-auto px-4 md:px-6">
@@ -119,7 +119,7 @@ export default function Templates() {
                   <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-400 z-10" />
                 </div>
 
-                <div className="p-4 bg-[#0D0D12]">
+                <div className="p-4" style={{ backgroundColor: 'var(--section-bg-card)' }}>
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-white text-sm font-medium">{template.name}</p>

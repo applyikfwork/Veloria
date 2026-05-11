@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation } from 'wouter';
-import { Menu, X, LogOut, LayoutDashboard, User, ChevronDown } from 'lucide-react';
+import { Menu, X, LogOut, LayoutDashboard, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import AuthModal from '@/components/AuthModal';
@@ -41,8 +41,8 @@ export default function Navbar() {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled 
-            ? 'bg-background/80 backdrop-blur-xl border-b border-primary/20 py-4 shadow-[0_4px_30px_rgba(212,175,55,0.1)]' 
+          isScrolled
+            ? 'bg-background/85 backdrop-blur-xl border-b border-primary/20 py-4 shadow-[0_4px_30px_rgba(212,175,55,0.08)]'
             : 'bg-transparent py-6'
         }`}
       >
@@ -55,9 +55,11 @@ export default function Navbar() {
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-foreground/80 hover:text-primary transition-colors text-sm uppercase tracking-widest font-medium" data-testid="link-nav-features">Features</a>
-            <a href="#templates" className="text-foreground/80 hover:text-primary transition-colors text-sm uppercase tracking-widest font-medium" data-testid="link-nav-templates">Templates</a>
-            <a href="#pricing" className="text-foreground/80 hover:text-primary transition-colors text-sm uppercase tracking-widest font-medium" data-testid="link-nav-pricing">Pricing</a>
+            <Link href="/templates">
+              <span className="text-foreground/80 hover:text-primary transition-colors text-sm uppercase tracking-widest font-medium cursor-pointer" data-testid="link-nav-templates">
+                Templates
+              </span>
+            </Link>
 
             {user ? (
               <div className="relative">
@@ -78,21 +80,21 @@ export default function Navbar() {
                       initial={{ opacity: 0, y: 8, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 8, scale: 0.95 }}
-                      className="absolute right-0 top-full mt-2 w-52 bg-[#0B0B0F] border border-white/10 rounded-2xl overflow-hidden shadow-2xl"
+                      className="absolute right-0 top-full mt-2 w-52 bg-popover border border-border/40 rounded-2xl overflow-hidden shadow-2xl"
                     >
-                      <div className="px-4 py-3 border-b border-white/10">
-                        <p className="text-xs text-white/40">Signed in as</p>
-                        <p className="text-sm text-white truncate font-medium">{user.email}</p>
+                      <div className="px-4 py-3 border-b border-border/30">
+                        <p className="text-xs text-muted-foreground">Signed in as</p>
+                        <p className="text-sm text-foreground truncate font-medium">{user.email}</p>
                       </div>
                       <Link href="/dashboard" onClick={() => setUserMenuOpen(false)}>
-                        <button className="w-full flex items-center gap-3 px-4 py-3 text-sm text-white/80 hover:text-primary hover:bg-white/5 transition-colors" data-testid="button-goto-dashboard">
+                        <button className="w-full flex items-center gap-3 px-4 py-3 text-sm text-foreground/80 hover:text-primary hover:bg-primary/5 transition-colors" data-testid="button-goto-dashboard">
                           <LayoutDashboard size={16} />
                           My Dashboard
                         </button>
                       </Link>
                       <button
                         onClick={handleSignOut}
-                        className="w-full flex items-center gap-3 px-4 py-3 text-sm text-white/80 hover:text-red-400 hover:bg-white/5 transition-colors"
+                        className="w-full flex items-center gap-3 px-4 py-3 text-sm text-foreground/80 hover:text-red-500 hover:bg-red-50/50 dark:hover:bg-white/5 transition-colors"
                         data-testid="button-signout"
                       >
                         <LogOut size={16} />
@@ -114,7 +116,7 @@ export default function Navbar() {
                 </Button>
                 <Link href="/templates">
                   <Button className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-6 rounded-full" data-testid="button-nav-cta">
-                    Create Invitation
+                    Get Started
                   </Button>
                 </Link>
               </div>
@@ -122,7 +124,7 @@ export default function Navbar() {
           </nav>
 
           {/* Mobile Menu Toggle */}
-          <button 
+          <button
             className="md:hidden text-foreground hover:text-primary transition-colors"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             data-testid="button-mobile-menu-toggle"
@@ -135,15 +137,15 @@ export default function Navbar() {
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 z-40 bg-background/95 backdrop-blur-3xl pt-24 px-6 md:hidden flex flex-col items-center gap-8 border-b border-primary/20 shadow-2xl"
+            className="fixed inset-0 z-40 bg-background/97 backdrop-blur-3xl pt-24 px-6 md:hidden flex flex-col items-center gap-8 border-b border-primary/20 shadow-2xl"
           >
-            <a href="#features" onClick={() => setMobileMenuOpen(false)} className="text-xl font-serif text-foreground hover:text-primary transition-colors">Features</a>
-            <a href="#templates" onClick={() => setMobileMenuOpen(false)} className="text-xl font-serif text-foreground hover:text-primary transition-colors">Templates</a>
-            <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="text-xl font-serif text-foreground hover:text-primary transition-colors">Pricing</a>
+            <Link href="/templates" onClick={() => setMobileMenuOpen(false)}>
+              <span className="text-xl font-serif text-foreground hover:text-primary transition-colors">Templates</span>
+            </Link>
             {user ? (
               <>
                 <Link href="/dashboard" onClick={() => setMobileMenuOpen(false)}>
@@ -152,7 +154,7 @@ export default function Navbar() {
                     My Dashboard
                   </Button>
                 </Link>
-                <Button variant="ghost" onClick={() => { handleSignOut(); setMobileMenuOpen(false); }} className="text-red-400">
+                <Button variant="ghost" onClick={() => { handleSignOut(); setMobileMenuOpen(false); }} className="text-red-500">
                   <LogOut size={18} className="mr-2" />
                   Sign Out
                 </Button>
@@ -168,7 +170,7 @@ export default function Navbar() {
                 </Button>
                 <Link href="/templates" onClick={() => setMobileMenuOpen(false)}>
                   <Button className="bg-primary text-primary-foreground w-full py-6 text-lg rounded-full mt-2">
-                    Create Your Invitation
+                    Browse Templates
                   </Button>
                 </Link>
               </>

@@ -50,7 +50,7 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section className="py-24 bg-[#08080C] relative overflow-hidden">
+    <section className="py-24 relative overflow-hidden" style={{ backgroundColor: 'var(--section-bg)' }}>
       {/* Background elements */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[500px] bg-primary/5 blur-[120px] pointer-events-none"></div>
 
