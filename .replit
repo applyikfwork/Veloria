@@ -33,7 +33,7 @@ args = "PORT=20823 BASE_PATH=/ pnpm --filter @workspace/wedding-platform run dev
 waitForPort = 20823
 
 [agent]
-stack = "PNPM_WORKSPACE"
+stack = "BEST_EFFORT_FALLBACK"
 expertMode = true
 
 [postMerge]
