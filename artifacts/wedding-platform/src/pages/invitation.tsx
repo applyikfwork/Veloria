@@ -82,6 +82,10 @@ export default function InvitationPage() {
   const [translations, setTranslations] = useState<any>({});
   const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
   
+  // Cinematic entrance state
+  const [showEntrance, setShowEntrance] = useState(true);
+  const [entranceDismissed, setEntranceDismissed] = useState(false);
+
   // Quiz State
   const [quizStep, setQuizStep] = useState<'start' | 'playing' | 'end'>('start');
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -154,6 +158,13 @@ export default function InvitationPage() {
     fetchData();
   }, [slug]);
 
+  // Auto-dismiss cinematic entrance after 3s
+  useEffect(() => {
+    if (!invitation) return;
+    const timer = setTimeout(() => setShowEntrance(false), 3000);
+    return () => clearTimeout(timer);
+  }, [invitation]);
+
   // Track page view silently
   useEffect(() => {
     if (!slug) return;
@@ -197,15 +208,22 @@ export default function InvitationPage() {
     localStorage.setItem('veloria_lang', language);
   }, [language]);
 
-  // Photos for slideshow
+  // Photos for slideshow — uses all gallery photos + profile photos
   const photos = useMemo(() => {
-    const list = [];
+    const list: string[] = [];
+    // Add gallery photos first (highest quality, user-uploaded)
+    const gallery = invitation?.gallery_photos;
+    if (gallery?.couple?.length) list.push(...gallery.couple.filter(Boolean));
+    if (gallery?.preWedding?.length) list.push(...gallery.preWedding.filter(Boolean));
+    if (gallery?.family?.length) list.push(...gallery.family.filter(Boolean));
+    // Add profile photos
     if (invitation?.bride_photo_url) list.push(invitation.bride_photo_url);
     if (invitation?.groom_photo_url) list.push(invitation.groom_photo_url);
-    // Add dummy if empty
+    // Fall back to stock photos if nothing uploaded
     if (list.length === 0) {
       list.push("https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200");
       list.push("https://images.unsplash.com/photo-1583939003579-730e3918a45a?q=80&w=1200");
+      list.push("https://images.unsplash.com/photo-1606216794074-735e91aa2c92?q=80&w=1200");
     }
     return list;
   }, [invitation]);
@@ -326,6 +344,87 @@ export default function InvitationPage() {
 
   return (
     <div className="min-h-screen bg-[#0B0B0F] text-foreground font-sans selection:bg-primary/30">
+      {/* Cinematic Entrance Overlay */}
+      <AnimatePresence>
+        {showEntrance && !entranceDismissed && invitation && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.2, ease: "easeInOut" }}
+            className="fixed inset-0 z-[200] flex flex-col items-center justify-center bg-[#0B0B0F] cursor-pointer"
+            onClick={() => { setShowEntrance(false); setEntranceDismissed(true); }}
+          >
+            {/* Gold shimmer background */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-radial from-primary/10 via-transparent to-transparent"
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+            />
+            {/* Floating rings icon */}
+            <motion.div
+              initial={{ scale: 0, rotate: -20 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.2, duration: 0.8, type: "spring", stiffness: 120 }}
+              className="text-6xl mb-8 select-none"
+            >
+              💍
+            </motion.div>
+            {/* Couple names */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
+              className="text-center px-8"
+            >
+              <p className="text-primary/60 uppercase tracking-[0.4em] text-xs font-medium mb-4">
+                You are cordially invited to the wedding of
+              </p>
+              <h1 className="font-serif text-4xl md:text-6xl text-white font-bold tracking-wide">
+                {invitation.bride_name}
+              </h1>
+              <motion.div
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ delay: 0.9, duration: 0.6 }}
+                className="flex items-center justify-center gap-4 my-4"
+              >
+                <div className="h-px bg-gradient-to-r from-transparent via-primary to-transparent flex-1 max-w-24" />
+                <Heart className="w-5 h-5 text-primary fill-primary" />
+                <div className="h-px bg-gradient-to-r from-transparent via-primary to-transparent flex-1 max-w-24" />
+              </motion.div>
+              <h1 className="font-serif text-4xl md:text-6xl text-white font-bold tracking-wide">
+                {invitation.groom_name}
+              </h1>
+            </motion.div>
+            {/* Date */}
+            {invitation.events?.[0]?.date && (
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.1, duration: 0.6 }}
+                className="mt-8 text-white/40 text-sm tracking-widest uppercase font-medium"
+              >
+                {format(new Date(invitation.events[0].date), 'MMMM d, yyyy')}
+              </motion.p>
+            )}
+            {/* Tap to open hint */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0, 1, 0.5, 1] }}
+              transition={{ delay: 1.8, duration: 1.2, repeat: Infinity, repeatDelay: 0.6 }}
+              className="absolute bottom-12 flex flex-col items-center gap-2"
+            >
+              <p className="text-white/25 text-xs tracking-[0.3em] uppercase">Tap to open</p>
+              <motion.div
+                animate={{ y: [0, 6, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+                className="w-px h-6 bg-gradient-to-b from-white/20 to-transparent"
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Animated Entrance — Floating Petals */}
       <div className="fixed inset-0 pointer-events-none z-[100] overflow-hidden" aria-hidden>
         {[...Array(18)].map((_, i) => (
@@ -527,6 +626,96 @@ export default function InvitationPage() {
         </div>
       </section>
 
+      {/* Family Blessings Section */}
+      {invitation.family_details && (invitation.family_details.brideParents?.[0] || invitation.family_details.groomParents?.[0] || invitation.family_details.blessingQuote) && (
+        <section className="py-20 px-6 bg-gradient-to-b from-black/40 to-primary/5">
+          <div className="max-w-4xl mx-auto space-y-12">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center space-y-3"
+            >
+              <div className="h-px w-16 bg-primary/40 mx-auto" />
+              <h2 className="text-4xl font-serif text-white">With the Blessings of</h2>
+              <p className="text-muted-foreground italic">Our families who made us who we are</p>
+            </motion.div>
+
+            {invitation.family_details.blessingQuote && (
+              <motion.blockquote
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                className="text-center italic text-lg text-primary/80 font-serif max-w-2xl mx-auto border-l-2 border-primary/30 pl-6"
+              >
+                "{invitation.family_details.blessingQuote}"
+              </motion.blockquote>
+            )}
+
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Bride's Family */}
+              {(invitation.family_details.brideParents?.[0] || invitation.family_details.brideParents?.[1]) && (
+                <motion.div
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4"
+                >
+                  <div className="flex items-center gap-2">
+                    <div className="h-px flex-1 bg-primary/20" />
+                    <h4 className="text-primary/80 text-xs uppercase tracking-widest font-medium whitespace-nowrap">Bride's Family</h4>
+                    <div className="h-px flex-1 bg-primary/20" />
+                  </div>
+                  <div className="space-y-2">
+                    {invitation.family_details.brideParents?.filter(Boolean).map((name: string, i: number) => (
+                      <p key={i} className="text-white/80 text-center font-serif text-lg">{name}</p>
+                    ))}
+                    {invitation.family_details.brideGrandparents?.filter(Boolean).map((name: string, i: number) => (
+                      <p key={i} className="text-white/40 text-center text-sm italic">{name}</p>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
+              {/* Groom's Family */}
+              {(invitation.family_details.groomParents?.[0] || invitation.family_details.groomParents?.[1]) && (
+                <motion.div
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4"
+                >
+                  <div className="flex items-center gap-2">
+                    <div className="h-px flex-1 bg-primary/20" />
+                    <h4 className="text-primary/80 text-xs uppercase tracking-widest font-medium whitespace-nowrap">Groom's Family</h4>
+                    <div className="h-px flex-1 bg-primary/20" />
+                  </div>
+                  <div className="space-y-2">
+                    {invitation.family_details.groomParents?.filter(Boolean).map((name: string, i: number) => (
+                      <p key={i} className="text-white/80 text-center font-serif text-lg">{name}</p>
+                    ))}
+                    {invitation.family_details.groomGrandparents?.filter(Boolean).map((name: string, i: number) => (
+                      <p key={i} className="text-white/40 text-center text-sm italic">{name}</p>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </div>
+
+            {invitation.family_details.familyMessage && (
+              <motion.p
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true }}
+                className="text-center text-muted-foreground text-base leading-relaxed max-w-2xl mx-auto"
+              >
+                {invitation.family_details.familyMessage}
+              </motion.p>
+            )}
+          </div>
+        </section>
+      )}
+
       {/* Cinematic Photo Reveal */}
       <section className="py-24 bg-black overflow-hidden relative min-h-[60vh] flex items-center justify-center">
         <AnimatePresence mode="wait">
@@ -573,14 +762,63 @@ export default function InvitationPage() {
       </section>
 
       {/* Love Story Section */}
-      {invitation.love_story?.howTheyMet && (
+      {invitation.love_story && (invitation.love_story.howTheyMet || invitation.love_story.specialMoments || invitation.love_story.proposalStory) && (
         <section className="py-24 px-6 bg-white/5 backdrop-blur-sm">
-          <div className="max-w-3xl mx-auto text-center space-y-8">
-            <Sparkles className="h-8 w-8 text-primary mx-auto opacity-50" />
-            <h2 className="text-4xl font-serif text-white">Our Love Story</h2>
-            <p className="text-lg text-muted-foreground leading-relaxed italic">
-              "{invitation.love_story.howTheyMet}"
-            </p>
+          <div className="max-w-3xl mx-auto text-center space-y-12">
+            <div className="space-y-4">
+              <Sparkles className="h-8 w-8 text-primary mx-auto opacity-50" />
+              <h2 className="text-4xl font-serif text-white">Our Love Story</h2>
+            </div>
+
+            <div className="space-y-10 text-left">
+              {invitation.love_story.howTheyMet && (
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="space-y-3"
+                >
+                  <h3 className="text-primary text-xs uppercase tracking-widest flex items-center gap-2">
+                    <Heart className="h-3 w-3 fill-primary" /> How We Met
+                  </h3>
+                  <p className="text-lg text-muted-foreground leading-relaxed italic">
+                    "{invitation.love_story.howTheyMet}"
+                  </p>
+                </motion.div>
+              )}
+
+              {invitation.love_story.specialMoments && (
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="space-y-3 border-l-2 border-primary/20 pl-6"
+                >
+                  <h3 className="text-primary text-xs uppercase tracking-widest flex items-center gap-2">
+                    <Sparkles className="h-3 w-3" /> Our Special Moments
+                  </h3>
+                  <p className="text-lg text-muted-foreground leading-relaxed italic">
+                    "{invitation.love_story.specialMoments}"
+                  </p>
+                </motion.div>
+              )}
+
+              {invitation.love_story.proposalStory && (
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  className="space-y-3"
+                >
+                  <h3 className="text-primary text-xs uppercase tracking-widest flex items-center gap-2">
+                    <Heart className="h-3 w-3 fill-primary" /> The Proposal
+                  </h3>
+                  <p className="text-lg text-muted-foreground leading-relaxed italic">
+                    "{invitation.love_story.proposalStory}"
+                  </p>
+                </motion.div>
+              )}
+            </div>
           </div>
         </section>
       )}

@@ -112,9 +112,9 @@ export default function Navbar() {
                 >
                   Sign In
                 </Button>
-                <Link href="/create">
+                <Link href="/templates">
                   <Button className="bg-primary text-primary-foreground hover:bg-primary/90 font-semibold px-6 rounded-full" data-testid="button-nav-cta">
-                    Get Started
+                    Create Invitation
                   </Button>
                 </Link>
               </div>
@@ -166,7 +166,7 @@ export default function Navbar() {
                 >
                   Sign In / Sign Up
                 </Button>
-                <Link href="/create" onClick={() => setMobileMenuOpen(false)}>
+                <Link href="/templates" onClick={() => setMobileMenuOpen(false)}>
                   <Button className="bg-primary text-primary-foreground w-full py-6 text-lg rounded-full mt-2">
                     Create Your Invitation
                   </Button>

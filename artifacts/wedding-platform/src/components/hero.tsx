@@ -47,7 +47,7 @@ function DemoDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
             </div>
 
             <div className="p-6 border-t border-white/10 flex gap-3">
-              <Link href="/create" className="flex-1">
+              <Link href="/templates" className="flex-1">
                 <Button className="w-full bg-primary text-primary-foreground rounded-full">
                   Create Your Own
                 </Button>
@@ -153,7 +153,7 @@ export default function Hero() {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
-              <Link href="/create">
+              <Link href="/templates">
                 <Button
                   size="lg"
                   className="w-full sm:w-auto h-14 px-8 bg-gradient-to-r from-primary to-[#B59530] text-primary-foreground text-lg rounded-full font-semibold shadow-[0_0_40px_rgba(212,175,55,0.3)] hover:shadow-[0_0_60px_rgba(212,175,55,0.5)] transition-all hover:scale-105"

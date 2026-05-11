@@ -111,7 +111,7 @@ export default function HowItWorks() {
           transition={{ delay: 0.5 }}
           className="text-center mt-16"
         >
-          <Link href="/create">
+          <Link href="/templates">
             <Button
               size="lg"
               className="h-14 px-10 bg-gradient-to-r from-primary to-[#B59530] text-primary-foreground text-lg rounded-full font-semibold shadow-[0_0_40px_rgba(212,175,55,0.3)] hover:shadow-[0_0_60px_rgba(212,175,55,0.5)] hover:scale-105 transition-all"

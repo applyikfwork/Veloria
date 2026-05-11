@@ -35,6 +35,7 @@ waitForPort = 20823
 [agent]
 stack = "BEST_EFFORT_FALLBACK"
 expertMode = true
+integrations = ["javascript_gemini_ai_integrations:2.0.0"]
 
 [postMerge]
 path = "scripts/post-merge.sh"
@@ -61,3 +62,6 @@ externalPort = 3000
 [userenv.shared]
 VITE_SUPABASE_URL = "https://hjtmndxracqmapdryezp.supabase.co"
 VITE_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhqdG1uZHhyYWNxbWFwZHJ5ZXpwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg0MDg0MjYsImV4cCI6MjA5Mzk4NDQyNn0.wdYgLc5rDW-QPP5CWgzAbAvxYPGLXDeowQ8G0syr5YY"
+
+[nix]
+channel = "stable-25_05"

@@ -2,19 +2,19 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { 
   CheckCircle2, 
-  Download, 
   Share2, 
   Copy, 
   Smartphone, 
   Instagram, 
   FileText, 
-  Video, 
   QrCode,
   Sparkles,
   ExternalLink,
   Edit2,
   Check,
-  Eye
+  Eye,
+  Download,
+  Link2
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -33,15 +33,6 @@ interface ExportShareStepProps {
   onSaveSlug?: (slug: string) => void;
 }
 
-const EXPORT_OPTIONS = [
-  { id: "video", label: "Download Video", icon: <Video className="h-5 w-5" />, premium: true, color: "text-purple-400" },
-  { id: "pdf", label: "Download PDF", icon: <FileText className="h-5 w-5" />, premium: false, color: "text-blue-400" },
-  { id: "whatsapp", label: "Share to WhatsApp", icon: <Smartphone className="h-5 w-5" />, premium: false, color: "text-green-400" },
-  { id: "instagram", label: "Share to Instagram", icon: <Instagram className="h-5 w-5" />, premium: false, color: "text-pink-400" },
-  { id: "qr", label: "Generate QR Code", icon: <QrCode className="h-5 w-5" />, premium: false, color: "text-amber-400" },
-  { id: "copy", label: "Copy Link", icon: <Copy className="h-5 w-5" />, premium: false, color: "text-zinc-400" },
-];
-
 export default function ExportShareStep({ formData, onNext, onBack, savedSlug, isSaving, onSaveSlug }: ExportShareStepProps) {
   const { toast } = useToast();
   const [isEditingSlug, setIsEditingSlug] = useState(false);
@@ -49,33 +40,143 @@ export default function ExportShareStep({ formData, onNext, onBack, savedSlug, i
 
   const defaultSlug = `${(formData.bride?.name || "priya").toLowerCase()}weds${(formData.groom?.name || "arjun").toLowerCase()}`.replace(/[^a-z0-9]/gi, '');
   const displaySlug = savedSlug || defaultSlug;
-  const url = `veloria.in/i/${displaySlug}`;
+  
+  const invitationUrl = savedSlug
+    ? `${window.location.origin}/i/${savedSlug}`
+    : `${window.location.origin}/i/${defaultSlug}`;
 
   useEffect(() => {
-    if (savedSlug) {
-      setCustomSlug(savedSlug);
-    } else {
-      setCustomSlug(defaultSlug);
-    }
+    setCustomSlug(savedSlug || defaultSlug);
   }, [savedSlug, defaultSlug]);
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(url);
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(invitationUrl);
+      toast({ title: "Link copied!", description: "Paste it anywhere to share." });
+    } catch {
+      toast({ title: "Copy failed", description: "Please copy the link manually.", variant: "destructive" });
+    }
+  };
+
+  const shareWhatsApp = () => {
+    const bride = formData.bride?.name || 'Priya';
+    const groom = formData.groom?.name || 'Arjun';
+    const text = `💍 You're invited to the wedding of *${bride} & ${groom}*!\n\nView their beautiful digital invitation:\n${invitationUrl}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+  };
+
+  const shareInstagram = async () => {
+    await copyToClipboard();
     toast({
       title: "Link copied!",
-      description: "Invitation link copied to clipboard.",
+      description: "Open Instagram and paste the link in your bio or story.",
     });
+    setTimeout(() => window.open('https://www.instagram.com/', '_blank'), 800);
+  };
+
+  const generateQR = () => {
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(invitationUrl)}&color=D4AF37&bgcolor=0B0B0F&margin=20`;
+    window.open(qrUrl, '_blank');
+  };
+
+  const printPDF = () => {
+    if (savedSlug) {
+      const printWindow = window.open(`/i/${savedSlug}`, '_blank');
+      if (printWindow) {
+        printWindow.onload = () => {
+          printWindow.print();
+        };
+      }
+    } else {
+      toast({ title: "Save first", description: "Please save your invitation before printing.", variant: "destructive" });
+    }
+  };
+
+  const shareNative = async () => {
+    const bride = formData.bride?.name || 'Priya';
+    const groom = formData.groom?.name || 'Arjun';
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: `${bride} & ${groom}'s Wedding Invitation`,
+          text: `You're invited to celebrate with ${bride} & ${groom}!`,
+          url: invitationUrl,
+        });
+      } else {
+        await copyToClipboard();
+      }
+    } catch {
+      await copyToClipboard();
+    }
   };
 
   const handleSaveSlug = () => {
-    if (onSaveSlug) {
+    if (onSaveSlug && customSlug.length >= 3) {
       onSaveSlug(customSlug);
       setIsEditingSlug(false);
     }
   };
 
+  const SHARE_OPTIONS = [
+    {
+      id: "whatsapp",
+      label: "WhatsApp",
+      icon: <Smartphone className="h-5 w-5" />,
+      color: "text-green-400",
+      bg: "bg-green-400/10 border-green-400/20 hover:bg-green-400/20",
+      action: shareWhatsApp,
+      actionLabel: "Share",
+    },
+    {
+      id: "copy",
+      label: "Copy Link",
+      icon: <Copy className="h-5 w-5" />,
+      color: "text-blue-400",
+      bg: "bg-blue-400/10 border-blue-400/20 hover:bg-blue-400/20",
+      action: copyToClipboard,
+      actionLabel: "Copy",
+    },
+    {
+      id: "native-share",
+      label: "Share",
+      icon: <Share2 className="h-5 w-5" />,
+      color: "text-primary",
+      bg: "bg-primary/10 border-primary/20 hover:bg-primary/20",
+      action: shareNative,
+      actionLabel: "Share",
+    },
+    {
+      id: "instagram",
+      label: "Instagram",
+      icon: <Instagram className="h-5 w-5" />,
+      color: "text-pink-400",
+      bg: "bg-pink-400/10 border-pink-400/20 hover:bg-pink-400/20",
+      action: shareInstagram,
+      actionLabel: "Open",
+    },
+    {
+      id: "qr",
+      label: "QR Code",
+      icon: <QrCode className="h-5 w-5" />,
+      color: "text-amber-400",
+      bg: "bg-amber-400/10 border-amber-400/20 hover:bg-amber-400/20",
+      action: generateQR,
+      actionLabel: "Generate",
+    },
+    {
+      id: "pdf",
+      label: "Print / PDF",
+      icon: <FileText className="h-5 w-5" />,
+      color: "text-purple-400",
+      bg: "bg-purple-400/10 border-purple-400/20 hover:bg-purple-400/20",
+      action: printPDF,
+      actionLabel: "Print",
+    },
+  ];
+
   return (
-    <div className="space-y-12 pb-10">
+    <div className="space-y-10 pb-10">
+      {/* Success header */}
       <div className="text-center relative">
         <motion.div
           initial={{ scale: 0 }}
@@ -85,154 +186,169 @@ export default function ExportShareStep({ formData, onNext, onBack, savedSlug, i
         >
           <CheckCircle2 className="h-10 w-10 text-primary" />
         </motion.div>
-        
-        {/* Confetti particles */}
-        {[...Array(12)].map((_, i) => (
+
+        {/* Confetti */}
+        {[...Array(14)].map((_, i) => (
           <motion.div
             key={i}
             initial={{ scale: 0, x: 0, y: 0 }}
-            animate={{ 
+            animate={{
               scale: [0, 1, 0],
-              x: (Math.random() - 0.5) * 200,
-              y: (Math.random() - 0.5) * 200,
-              rotate: Math.random() * 360
+              x: (Math.random() - 0.5) * 220,
+              y: (Math.random() - 0.5) * 220,
+              rotate: Math.random() * 360,
             }}
-            transition={{ duration: 1.5, repeat: Infinity, delay: Math.random() * 0.5 }}
-            className="absolute top-10 left-1/2 w-2 h-2 bg-primary rounded-sm"
+            transition={{ duration: 1.5, repeat: Infinity, delay: Math.random() * 0.8, repeatDelay: Math.random() * 2 }}
+            className="absolute top-10 left-1/2 w-2 h-2 rounded-sm"
+            style={{ backgroundColor: ['#D4AF37', '#FF6B9D', '#9B59B6', '#4CAF50', '#FF9933'][i % 5] }}
           />
         ))}
 
-        <h2 className="text-3xl md:text-4xl font-serif text-white mb-4">Your Invitation is Ready!</h2>
+        <h2 className="text-3xl md:text-4xl font-serif text-white mb-3">Your Invitation is Ready!</h2>
         <p className="text-muted-foreground max-w-lg mx-auto">
           Congratulations! Your cinematic wedding invitation is live and ready to be shared with the world.
         </p>
       </div>
 
-      <div className="space-y-8 max-w-2xl mx-auto">
+      <div className="space-y-6 max-w-2xl mx-auto">
+        {/* URL Box */}
         <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-xl">
           <div className="flex items-center justify-between mb-3">
-            <Label className="text-white block">Your Wedding Website URL</Label>
+            <div className="flex items-center gap-2">
+              <Link2 className="h-4 w-4 text-primary" />
+              <span className="text-white text-sm font-medium">Your Invitation Link</span>
+            </div>
             {!isEditingSlug && (
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="text-primary hover:text-primary/80 h-8 gap-1 px-2"
+              <Button
+                variant="ghost"
+                size="sm"
+                className="text-primary hover:text-primary/80 h-7 gap-1 px-2 text-xs"
                 onClick={() => setIsEditingSlug(true)}
-                data-testid="button-edit-slug"
               >
                 <Edit2 className="h-3 w-3" />
-                Edit URL
+                Custom URL
               </Button>
             )}
           </div>
-          
-          <div className="flex flex-col gap-4">
-            <div className="flex gap-2">
-              <div className="relative flex-1">
-                <ExternalLink className="absolute left-3 top-3 h-4 w-4 text-primary" />
-                {isEditingSlug ? (
-                  <div className="flex items-center bg-black/40 border border-white/10 rounded-md overflow-hidden">
-                    <span className="pl-10 pr-0 text-white/40 text-sm whitespace-nowrap">vivah.in/i/</span>
-                    <Input
-                      value={customSlug}
-                      onChange={(e) => setCustomSlug(e.target.value.toLowerCase().replace(/[^a-z0-9]/gi, ''))}
-                      className="bg-transparent border-none pl-1 text-primary font-medium focus-visible:ring-0 focus-visible:ring-offset-0"
-                      autoFocus
-                    />
-                  </div>
-                ) : (
-                  <Input
-                    readOnly
-                    value={url}
-                    className="bg-black/40 border-white/10 pl-10 text-primary font-medium focus:ring-0"
-                  />
-                )}
-              </div>
-              
+
+          <div className="flex gap-2">
+            <div className="flex-1 relative">
+              <ExternalLink className="absolute left-3 top-3 h-4 w-4 text-primary" />
               {isEditingSlug ? (
-                <Button 
-                  onClick={handleSaveSlug} 
-                  disabled={isSaving}
-                  className="bg-primary text-primary-foreground hover:bg-primary/90"
-                  data-testid="button-save-custom-url"
-                >
-                  <Check className="h-4 w-4" />
-                </Button>
+                <div className="flex items-center bg-black/40 border border-primary/30 rounded-lg overflow-hidden">
+                  <span className="pl-10 pr-1 text-white/40 text-sm whitespace-nowrap py-2.5">
+                    {window.location.origin}/i/
+                  </span>
+                  <Input
+                    value={customSlug}
+                    onChange={(e) => setCustomSlug(e.target.value.toLowerCase().replace(/[^a-z0-9]/gi, ''))}
+                    className="bg-transparent border-none pl-0 text-primary font-medium focus-visible:ring-0 focus-visible:ring-offset-0"
+                    autoFocus
+                    placeholder="yourname"
+                  />
+                </div>
               ) : (
-                <Button 
-                  variant="secondary" 
-                  className="bg-primary/20 text-primary hover:bg-primary/30" 
-                  onClick={copyToClipboard}
-                  data-testid="button-copy-link"
-                >
-                  <Copy className="h-4 w-4" />
-                </Button>
+                <Input
+                  readOnly
+                  value={invitationUrl}
+                  className="bg-black/40 border-white/10 pl-10 text-primary font-medium text-sm focus:ring-0 cursor-text"
+                />
               )}
             </div>
 
-            {savedSlug && (
-              <Link href={`/i/${savedSlug}`} target="_blank">
-                <Button className="w-full bg-white/5 hover:bg-white/10 border border-white/10 text-white gap-2" data-testid="button-view-invitation">
-                  <Eye className="h-4 w-4" />
-                  View Your Invitation
-                </Button>
-              </Link>
+            {isEditingSlug ? (
+              <Button
+                onClick={handleSaveSlug}
+                disabled={isSaving || customSlug.length < 3}
+                className="bg-primary text-primary-foreground hover:bg-primary/90"
+              >
+                {isSaving ? '...' : <Check className="h-4 w-4" />}
+              </Button>
+            ) : (
+              <Button
+                variant="secondary"
+                className="bg-primary/20 text-primary hover:bg-primary/30 border border-primary/30"
+                onClick={copyToClipboard}
+              >
+                <Copy className="h-4 w-4" />
+              </Button>
             )}
+          </div>
+
+          {savedSlug && (
+            <Link href={`/i/${savedSlug}`} target="_blank">
+              <Button className="w-full mt-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white gap-2 rounded-xl">
+                <Eye className="h-4 w-4" />
+                View Your Live Invitation
+                <ExternalLink className="h-3 w-3 opacity-50" />
+              </Button>
+            </Link>
+          )}
+        </div>
+
+        {/* Share Options */}
+        <div>
+          <p className="text-xs uppercase tracking-widest text-white/30 mb-4">Share with your guests</p>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {SHARE_OPTIONS.map((option) => (
+              <motion.button
+                key={option.id}
+                whileHover={{ y: -3, scale: 1.02 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={option.action}
+                className={`flex flex-col items-center gap-3 p-5 rounded-2xl border transition-all cursor-pointer group ${option.bg}`}
+              >
+                <div className={cn("h-11 w-11 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform", option.color, "bg-black/20")}>
+                  {option.icon}
+                </div>
+                <div className="text-center">
+                  <p className="text-xs font-medium text-white">{option.label}</p>
+                  <p className={cn("text-[10px] mt-0.5", option.color)}>{option.actionLabel} →</p>
+                </div>
+              </motion.button>
+            ))}
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {EXPORT_OPTIONS.map((option) => (
-            <motion.div
-              key={option.id}
-              whileHover={{ y: -5 }}
-              className="bg-white/5 border border-white/10 p-6 rounded-2xl flex flex-col items-center text-center gap-3 hover:bg-white/10 transition-all cursor-pointer group"
-              data-testid={`card-export-${option.id}`}
-            >
-              <div className={cn("h-12 w-12 rounded-xl bg-white/5 flex items-center justify-center group-hover:scale-110 transition-transform", option.color)}>
-                {option.icon}
-              </div>
-              <div className="space-y-1">
-                <p className="text-xs font-medium text-white">{option.label}</p>
-                {option.premium && (
-                  <Badge variant="outline" className="text-[8px] h-4 bg-primary/10 text-primary border-primary/20">PREMIUM</Badge>
+        {/* Guest personalised link tip */}
+        <div className="bg-white/4 border border-white/8 rounded-2xl p-5">
+          <div className="flex items-start gap-3">
+            <Sparkles className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+            <div>
+              <p className="text-white text-sm font-medium mb-1">Personalise for each guest</p>
+              <p className="text-white/40 text-xs leading-relaxed">
+                Add <code className="text-primary bg-primary/10 px-1 rounded">?guest=GuestName</code> to the URL to greet each guest by name.
+                {savedSlug && (
+                  <span className="block mt-1 text-primary/60">
+                    Example: <span className="text-primary">{window.location.origin}/i/{savedSlug}?guest=Anjali</span>
+                  </span>
                 )}
-              </div>
-              <Button size="sm" variant="ghost" className="w-full h-8 text-[10px] mt-2 border border-white/5">
-                {option.id === "copy" ? "Copy" : "Download"}
-              </Button>
-            </motion.div>
-          ))}
+              </p>
+            </div>
+          </div>
         </div>
 
+        {/* Upgrade CTA */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="bg-gradient-to-r from-primary/20 via-primary/10 to-transparent border border-primary/20 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-6"
+          transition={{ delay: 0.4 }}
+          className="bg-gradient-to-r from-primary/20 via-primary/10 to-transparent border border-primary/20 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-4"
         >
           <div className="flex items-center gap-4">
-            <div className="h-12 w-12 rounded-full bg-primary/20 flex items-center justify-center">
+            <div className="h-12 w-12 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
               <Sparkles className="h-6 w-6 text-primary" />
             </div>
             <div>
               <h4 className="text-white font-serif">Upgrade to Premium</h4>
-              <p className="text-xs text-muted-foreground">Get 4K video export, unlimited guest tracking, and custom domain.</p>
+              <p className="text-xs text-muted-foreground">4K video export, unlimited guests, custom domain, WhatsApp reminders</p>
             </div>
           </div>
-          <Button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-8">
+          <Button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-8 shrink-0">
             Upgrade Now
           </Button>
         </motion.div>
       </div>
     </div>
-  );
-}
-
-function Label({ children, className, ...props }: any) {
-  return (
-    <label className={cn("text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70", className)} {...props}>
-      {children}
-    </label>
   );
 }

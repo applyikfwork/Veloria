@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useLocation } from "wouter";
-import { ChevronLeft, X, Save, Eye, Check } from "lucide-react";
+import { ChevronLeft, X, Save, Eye, Check, Palette } from "lucide-react";
+import { getTemplateById } from "@/lib/templates";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import WeddingTypeStep from "@/components/wizard/WeddingTypeStep";
@@ -43,9 +44,23 @@ export default function CreateInvitationPage() {
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [savedSlug, setSavedSlug] = useState<string | undefined>();
+  const [selectedTemplate, setSelectedTemplate] = useState<any>(null);
 
   const { user } = useAuth();
   const { toast } = useToast();
+
+  // Read template from URL query param
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const templateId = params.get('template');
+    if (templateId) {
+      const tmpl = getTemplateById(templateId);
+      if (tmpl) {
+        setSelectedTemplate(tmpl);
+        setFormData(prev => ({ ...prev, designTheme: tmpl.designTheme, music: { ...prev.music, selectedMusic: tmpl.music } }));
+      }
+    }
+  }, []);
 
   const [formData, setFormData] = useState({
     weddingType: "",
@@ -298,9 +313,17 @@ export default function CreateInvitationPage() {
             <ChevronLeft className="h-6 w-6" />
           </Button>
           <div>
-            <p className="text-xs uppercase tracking-widest text-primary font-medium">
-              Step {currentStep} of {TOTAL_STEPS}
-            </p>
+            <div className="flex items-center gap-2">
+              <p className="text-xs uppercase tracking-widest text-primary font-medium">
+                Step {currentStep} of {TOTAL_STEPS}
+              </p>
+              {selectedTemplate && (
+                <span className="text-[10px] bg-primary/20 border border-primary/30 text-primary px-2 py-0.5 rounded-full flex items-center gap-1">
+                  <Palette className="h-2.5 w-2.5" />
+                  {selectedTemplate.name}
+                </span>
+              )}
+            </div>
             <h1 className="text-lg font-serif">{STEP_NAMES[currentStep - 1]}</h1>
           </div>
         </div>

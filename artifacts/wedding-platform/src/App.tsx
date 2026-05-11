@@ -14,6 +14,7 @@ import SaveTheDatePage from "./pages/save-the-date";
 import EventInvitationPage from "./pages/event-invitation";
 import MemoryBookPage from "./pages/memory-book";
 import DashboardPage from "./pages/dashboard";
+import TemplatesPage from "./pages/templates-page";
 
 const queryClient = new QueryClient();
 
@@ -50,6 +51,7 @@ function Router() {
     <AnimatePresence mode="wait">
       <Switch key={location}>
         <Route path="/" component={() => <AnimatedRoute component={HomePage} />} />
+        <Route path="/templates" component={() => <AnimatedRoute component={TemplatesPage} />} />
         <Route path="/create" component={() => <AnimatedRoute component={CreateInvitationPage} />} />
         <Route path="/i/:slug" component={() => <AnimatedRoute component={InvitationPage} />} />
         <Route path="/i/:slug/rsvp" component={() => <AnimatedRoute component={RSVPPage} />} />

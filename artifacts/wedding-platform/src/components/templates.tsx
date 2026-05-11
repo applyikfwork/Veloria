@@ -1,60 +1,29 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Flame, Star, Crown } from 'lucide-react';
+import { Link } from 'wouter';
+import { TEMPLATES } from '@/lib/templates';
 
-const templates = [
-  {
-    id: 1,
-    name: "Royal Palace",
-    style: "Hindu",
-    gradient: "from-[#2A0808] via-[#4A0E0E] to-[#1A0505]",
-    border: "border-primary/40",
-  },
-  {
-    id: 2,
-    name: "Garden Floral",
-    style: "Muslim",
-    gradient: "from-[#0A1A14] via-[#1B4332] to-[#0A1A14]",
-    border: "border-[#F7E7CE]/40",
-  },
-  {
-    id: 3,
-    name: "Golden Sikh",
-    style: "Sikh",
-    gradient: "from-[#3B2F0B] via-[#78590C] to-[#1F1805]",
-    border: "border-primary/50",
-  },
-  {
-    id: 4,
-    name: "Christian Chapel",
-    style: "Christian",
-    gradient: "from-[#0F172A] via-[#1E293B] to-[#0F172A]",
-    border: "border-white/20",
-  },
-  {
-    id: 5,
-    name: "Modern Cinematic",
-    style: "Contemporary",
-    gradient: "from-[#0B0B0F] via-[#1A1A24] to-[#0B0B0F]",
-    border: "border-primary/30",
-  },
-  {
-    id: 6,
-    name: "Pastel Romance",
-    style: "Fusion",
-    gradient: "from-[#2D1B2E] via-[#4A2B4D] to-[#1A101C]",
-    border: "border-[#B76E79]/50",
-  }
-];
+const FEATURED = TEMPLATES.slice(0, 6);
 
 export default function Templates() {
   return (
-    <section id="templates" className="py-24 bg-[#08080C] relative">
+    <section id="templates" className="py-24 bg-[#08080C] relative overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
+
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
           <div className="max-w-2xl">
-            <motion.h2 
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-primary text-xs uppercase tracking-[0.3em] mb-3 font-medium"
+            >
+              {TEMPLATES.length}+ Templates
+            </motion.p>
+            <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -62,68 +31,128 @@ export default function Templates() {
             >
               Find Your <span className="text-primary italic">Perfect Style</span>
             </motion.h2>
-            <motion.p 
+            <motion.p
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
               className="text-foreground/70 text-lg"
             >
-              From grand palaces to intimate gardens, discover templates crafted by master designers.
+              Wedding, Engagement, Sangeet, Mehndi — browse by ceremony, region, and mood.
             </motion.p>
           </div>
-          
+
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
           >
-            <Button variant="outline" className="border-primary/30 text-primary hover:bg-primary/10 bg-transparent rounded-full px-6">
-              View All Designs <ArrowRight className="ml-2 w-4 h-4" />
-            </Button>
+            <Link href="/templates">
+              <Button className="border-primary/30 text-primary hover:bg-primary/10 bg-transparent rounded-full px-6 border">
+                Browse All Templates <ArrowRight className="ml-2 w-4 h-4" />
+              </Button>
+            </Link>
           </motion.div>
         </div>
 
-        {/* Mobile Horizontal Scroll / Desktop Grid */}
-        <div className="flex overflow-x-auto md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 pb-8 md:pb-0 snap-x snap-mandatory hide-scrollbar">
-          {templates.map((template, index) => (
+        {/* Template Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+          {FEATURED.map((template, index) => (
             <motion.div
               key={template.id}
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
-              className="min-w-[280px] w-full snap-center group cursor-pointer"
+              transition={{ delay: index * 0.07, duration: 0.4 }}
+              whileHover={{ y: -6, scale: 1.02 }}
+              className="group relative rounded-2xl overflow-hidden border cursor-pointer"
+              style={{ borderColor: template.accentColor + '33' }}
             >
-              <div className={`relative h-[400px] rounded-2xl overflow-hidden border ${template.border} bg-gradient-to-br ${template.gradient} shadow-lg transition-transform duration-500 group-hover:scale-[1.03] group-hover:shadow-[0_10px_40px_rgba(212,175,55,0.15)]`}>
-                
-                {/* Decorative Pattern overlay */}
-                <div className="absolute inset-0 opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPjxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIxIiBmaWxsPSIjRjdFN0NFIi8+PC9zdmc+')] mix-blend-overlay"></div>
-                
-                {/* Inner Border */}
-                <div className="absolute inset-4 border border-white/10 rounded-xl z-10 pointer-events-none"></div>
-                
-                {/* Content */}
-                <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center z-20">
-                  <div className="translate-y-8 group-hover:translate-y-0 transition-transform duration-500 ease-out">
-                    <span className="inline-block px-3 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-xs uppercase tracking-widest text-[#F7E7CE] mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
-                      {template.style}
-                    </span>
-                    <h3 className="text-3xl font-serif italic text-white font-bold mb-2">{template.name}</h3>
-                    <div className="w-12 h-[1px] bg-primary mx-auto mb-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-200"></div>
-                    <Button variant="link" className="text-primary hover:text-[#F7E7CE] p-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-300">
-                      Preview Template
-                    </Button>
+              <Link href={`/templates`}>
+                <div
+                  className={`relative h-[260px] md:h-[320px] flex flex-col items-center justify-center bg-gradient-to-br ${template.cardGradient}`}
+                >
+                  {/* Pattern overlay */}
+                  <div className="absolute inset-0 opacity-5 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4IiBoZWlnaHQ9IjgiPjxjaXJjbGUgY3g9IjQiIGN5PSI0IiByPSIxLjUiIGZpbGw9IndoaXRlIi8+PC9zdmc+')] mix-blend-overlay" />
+
+                  {/* Inner border */}
+                  <div className="absolute inset-4 border border-white/10 rounded-xl z-10 pointer-events-none" />
+
+                  {/* Badges */}
+                  <div className="absolute top-4 left-4 flex flex-col gap-1.5 z-20">
+                    {template.isPremium && (
+                      <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-amber-400/90 text-black flex items-center gap-1">
+                        <Crown className="h-2.5 w-2.5" /> Premium
+                      </span>
+                    )}
+                    {template.isNew && !template.isPremium && (
+                      <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-400/90 text-black">
+                        New
+                      </span>
+                    )}
+                    {template.isTrending && (
+                      <span className="text-[9px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-red-500/90 text-white flex items-center gap-1">
+                        <Flame className="h-2.5 w-2.5" /> Hot
+                      </span>
+                    )}
                   </div>
+
+                  {/* Content */}
+                  <div className="relative z-20 flex flex-col items-center text-center px-6 translate-y-2 group-hover:translate-y-0 transition-transform duration-400">
+                    <span className="text-4xl mb-3 drop-shadow-lg">{template.heroEmoji}</span>
+                    <span className="inline-block px-3 py-1 rounded-full bg-black/40 backdrop-blur-md border border-white/10 text-xs uppercase tracking-widest text-white/60 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-75">
+                      {template.ceremony} • {template.style}
+                    </span>
+                    <h3 className="text-xl md:text-2xl font-serif italic text-white font-bold mb-1.5">{template.name}</h3>
+                    <p className="text-xs text-white/40 hidden group-hover:block transition-all">{template.tagline}</p>
+                    <div className="w-10 h-[1px] mx-auto mt-3 mb-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100" style={{ backgroundColor: template.accentColor }} />
+
+                    <div className="flex gap-1.5 justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-150">
+                      {template.swatches.slice(0, 3).map((c, i) => (
+                        <div key={i} className="w-4 h-4 rounded-full border border-black/30" style={{ backgroundColor: c }} />
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Hover overlay */}
+                  <div className="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-400 z-10" />
                 </div>
 
-                {/* Hover overlay gradient */}
-                <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-0"></div>
-              </div>
+                <div className="p-4 bg-[#0D0D12]">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-white text-sm font-medium">{template.name}</p>
+                      <p className="text-white/30 text-xs capitalize">{template.region.replace('-', ' ')}</p>
+                    </div>
+                    <div className="flex items-center gap-1 text-white/30 text-xs">
+                      <Star className="h-3 w-3" />
+                      <span>{(template.usedByCount / 1000).toFixed(1)}k</span>
+                    </div>
+                  </div>
+                </div>
+              </Link>
             </motion.div>
           ))}
         </div>
+
+        {/* CTA Banner */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-12 text-center"
+        >
+          <Link href="/templates">
+            <Button
+              size="lg"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-10 py-6 h-auto text-base font-semibold shadow-[0_0_30px_rgba(212,175,55,0.2)] hover:shadow-[0_0_50px_rgba(212,175,55,0.35)] transition-all hover:scale-105"
+            >
+              Browse All {TEMPLATES.length} Templates <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </Link>
+          <p className="text-white/30 text-sm mt-4">Select a template → Fill your details → Go live in minutes</p>
+        </motion.div>
       </div>
     </section>
   );
