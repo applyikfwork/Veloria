@@ -213,7 +213,7 @@ export default function InvitationPage() {
   const photos = useMemo(() => {
     const list: string[] = [];
     // Add gallery photos first (highest quality, user-uploaded)
-    const gallery = invitation?.gallery_photos;
+    const gallery = invitation?.family_details?.gallery || invitation?.gallery_photos;
     if (gallery?.couple?.length) list.push(...gallery.couple.filter(Boolean));
     if (gallery?.preWedding?.length) list.push(...gallery.preWedding.filter(Boolean));
     if (gallery?.family?.length) list.push(...gallery.family.filter(Boolean));

@@ -51,6 +51,7 @@ export async function saveInvitation(formData: any, userId: string, customSlug?:
     ? await uploadPhoto(formData.photos.video, 'video')
     : null;
 
+  // Gallery stored inside family_details.gallery — no extra DB column needed
   const invitationData = {
     user_id: userId,
     slug,
@@ -65,22 +66,29 @@ export async function saveInvitation(formData: any, userId: string, customSlug?:
     groom_photo_url: groomPhotoUrl,
     love_story: formData.loveStory,
     family_details: {
-      ...formData.family,
+      ...(typeof formData.family === 'object' ? formData.family : {}),
       photos: familyPhotos,
+      gallery: {
+        couple: couplePhotos,
+        preWedding: preWeddingPhotos,
+        video: videoUrl,
+        captions: formData.photos?.captions || {},
+      },
     },
     events: formData.events,
     design_theme: formData.designTheme,
-    music_settings: formData.music,
-    rsvp_settings: formData.rsvp,
-    gift_registry: formData.giftRegistry || { enabled: false },
-    live_stream: formData.liveStream || { enabled: false },
-    gallery_photos: {
-      couple: couplePhotos,
-      preWedding: preWeddingPhotos,
-      family: familyPhotos,
-      video: videoUrl,
-      captions: formData.photos?.captions || {},
-      createSlideshow: formData.photos?.createSlideshow ?? true,
+    music_settings: {
+      ...(typeof formData.music === 'object' ? formData.music : {}),
+    },
+    rsvp_settings: {
+      ...(typeof formData.rsvp === 'object' ? formData.rsvp : {}),
+      giftRegistry: formData.giftRegistry || { enabled: false },
+      liveStream: formData.liveStream || { enabled: false },
+      templateSettings: {
+        colorMood: formData.colorMood,
+        filterStyle: formData.filterStyle,
+        sparkleIntensity: formData.sparkleIntensity,
+      },
     },
     is_published: true,
     updated_at: new Date().toISOString(),

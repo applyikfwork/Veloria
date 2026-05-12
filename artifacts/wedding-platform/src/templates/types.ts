@@ -5,7 +5,8 @@ export type FieldType =
   | 'photo-array'
   | 'event-list'
   | 'toggle'
-  | 'text-pair';
+  | 'text-pair'
+  | 'choice';
 
 export interface WizardField {
   key: string;
@@ -18,6 +19,7 @@ export interface WizardField {
   required?: boolean;
   maxItems?: number;
   column?: 'left' | 'right' | 'full';
+  options?: string[];
 }
 
 export interface WizardStepConfig {

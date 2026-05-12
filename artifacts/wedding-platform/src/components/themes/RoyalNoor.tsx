@@ -182,7 +182,7 @@ export default function RoyalNoorInvitation({ invitation }: RoyalNoorProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const photos: string[] = [];
-  const gallery = invitation?.gallery_photos;
+  const gallery = invitation?.family_details?.gallery || invitation?.gallery_photos;
   if (gallery?.couple?.length) photos.push(...gallery.couple.filter(Boolean));
   if (gallery?.preWedding?.length) photos.push(...gallery.preWedding.filter(Boolean));
   if (gallery?.family?.length) photos.push(...gallery.family.filter(Boolean));

@@ -396,6 +396,49 @@ function FieldTextPair({ field, formData, onFieldChange }: FieldProps) {
   );
 }
 
+function FieldChoice({ field, formData, onFieldChange, accentColor }: FieldProps) {
+  const value = getByPath(formData, field.key) || field.options?.[0];
+  const formatLabel = (v: string) => v.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+
+  return (
+    <div className="space-y-3">
+      {field.label && (
+        <Label className="text-white/70 text-xs uppercase tracking-widest">{field.label}</Label>
+      )}
+      {field.hint && <p className="text-xs text-white/30 italic mb-1">{field.hint}</p>}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+        {(field.options || []).map(opt => {
+          const selected = value === opt;
+          return (
+            <button
+              key={opt}
+              type="button"
+              onClick={() => onFieldChange(field.key, opt)}
+              className="p-4 rounded-2xl border-2 transition-all text-left"
+              style={{
+                borderColor: selected ? accentColor : 'rgba(255,255,255,0.1)',
+                backgroundColor: selected ? accentColor + '18' : 'rgba(255,255,255,0.03)',
+              }}
+            >
+              <div className="flex items-center gap-2.5">
+                <div
+                  className="w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all flex-shrink-0"
+                  style={{ borderColor: selected ? accentColor : 'rgba(255,255,255,0.25)' }}
+                >
+                  {selected && <div className="w-2 h-2 rounded-full" style={{ backgroundColor: accentColor }} />}
+                </div>
+                <span className="text-sm font-medium" style={{ color: selected ? '#fff' : 'rgba(255,255,255,0.55)' }}>
+                  {formatLabel(opt)}
+                </span>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function renderField(field: WizardField, formData: Record<string, any>, onFieldChange: (path: string, value: any) => void, accentColor: string) {
   const props: FieldProps = { field, formData, onFieldChange, accentColor };
   switch (field.type) {
@@ -406,6 +449,7 @@ function renderField(field: WizardField, formData: Record<string, any>, onFieldC
     case 'event-list': return <FieldEventList {...props} />;
     case 'toggle': return <FieldToggle {...props} />;
     case 'text-pair': return <FieldTextPair {...props} />;
+    case 'choice': return <FieldChoice {...props} />;
     default: return null;
   }
 }
