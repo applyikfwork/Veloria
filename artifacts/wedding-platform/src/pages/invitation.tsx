@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo, useRef } from "react";
 import { useRoute, Link } from "wouter";
-import RoyalNoorInvitation from "@/components/themes/RoyalNoor";
+import { getTemplateModule } from "@/templates/registry";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Heart, 
@@ -344,8 +344,10 @@ export default function InvitationPage() {
     }
   };
 
-  if (invitation.design_theme === 'royal-noor') {
-    return <RoyalNoorInvitation invitation={invitation} />;
+  const templateModule = getTemplateModule(invitation.design_theme);
+  if (templateModule) {
+    const { InvitationComponent } = templateModule;
+    return <InvitationComponent invitation={invitation} />;
   }
 
   return (
