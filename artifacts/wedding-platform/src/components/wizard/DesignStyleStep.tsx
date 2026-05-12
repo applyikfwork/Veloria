@@ -12,6 +12,12 @@ interface DesignStyleStepProps {
 
 const THEME_GROUPS = [
   {
+    label: "Veloria Signature",
+    themes: [
+      { id: "royal-noor", name: "The Royal Noor", tag: "Cinematic Palace Luxury", bg: "bg-gradient-to-br from-[#0F0F0F] via-[#1C1400] to-[#0F0F0F]" },
+    ],
+  },
+  {
     label: "Luxury & Classic",
     themes: [
       { id: "royal-maharaja", name: "Royal Maharaja", tag: "Gold & Grandeur", bg: "bg-gradient-to-br from-[#D4AF37] to-[#8B732A]" },

@@ -1,5 +1,6 @@
 import { useEffect, useState, useMemo, useRef } from "react";
 import { useRoute, Link } from "wouter";
+import RoyalNoorInvitation from "@/components/themes/RoyalNoor";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Heart, 
@@ -338,9 +339,14 @@ export default function InvitationPage() {
       case 'bollywood-glam': return 'from-[#4A0E0E] via-[#800020] to-[#4A0E0E]';
       case 'floral-bliss': return 'from-[#FFF5F5] via-[#FFE4E1] to-[#FFF5F5]';
       case 'dark-luxury': return 'from-[#0B0B0F] via-[#1A1A1F] to-[#0B0B0F]';
+      case 'royal-noor': return 'from-[#0F0F0F] via-[#1C1400] to-[#0F0F0F]';
       default: return 'from-[#0B0B0F] via-[#1A1A1F] to-[#0B0B0F]';
     }
   };
+
+  if (invitation.design_theme === 'royal-noor') {
+    return <RoyalNoorInvitation invitation={invitation} />;
+  }
 
   return (
     <div className="min-h-screen bg-[#0B0B0F] text-foreground font-sans selection:bg-primary/30">

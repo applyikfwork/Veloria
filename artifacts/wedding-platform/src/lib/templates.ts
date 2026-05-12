@@ -524,6 +524,37 @@ export const TEMPLATES: WeddingTemplate[] = [
     wizard: DEFAULT_FULL_WIZARD,
   },
   {
+    id: 'royal-noor',
+    name: 'The Royal Noor',
+    tagline: 'A cinematic tribute to a love that shines like gold.',
+    ceremony: 'wedding',
+    style: 'luxury',
+    region: 'north-indian',
+    mood: 'royal',
+    designTheme: 'royal-noor',
+    cardGradient: 'from-[#0F0F0F] via-[#1C1400] to-[#0F0F0F]',
+    cardBorder: 'border-[#D4AF37]/50',
+    accentColor: '#D4AF37',
+    swatches: ['#D4AF37', '#5E0B15', '#0F0F0F', '#F5F5F5'],
+    music: 'sufi',
+    tags: ['New', 'Featured', 'Veloria Signature', 'Cinematic'],
+    isPremium: true,
+    isNew: true,
+    isTrending: true,
+    usedByCount: 0,
+    heroEmoji: '🏛️',
+    previewBgClass: 'bg-gradient-to-br from-[#0F0F0F] via-[#1C1400] to-[#0F0F0F]',
+    wizard: {
+      steps: ['couple-details', 'family-details', 'events', 'design-customize', 'music', 'photos', 'rsvp', 'live-preview', 'export-share'],
+      customizableFields: ['accent-color', 'music-mood', 'language', 'hashtag', 'couple-photos', 'family-photos', 'love-story', 'family-message', 'blessing-quote', 'whatsapp-rsvp', 'gift-registry', 'live-stream', 'dress-code'],
+      requiresPhotos: true,
+      requiresFamily: true,
+      requiresLoveStory: true,
+      maxEvents: 6,
+      notes: 'Veloria Signature Series. Accent: Ruby / Emerald / Charcoal Gold. Music: Sufi Instrumental or Cinematic Orchestral.',
+    },
+  },
+  {
     id: 'silver-screen',
     name: 'Silver Screen',
     tagline: 'Cinematic Bollywood glamour for receptions',
@@ -553,7 +584,7 @@ export const STYLE_FILTERS = ['All', 'Traditional', 'Luxury', 'Minimal', 'Bollyw
 export const REGION_FILTERS = ['All', 'North Indian', 'South Indian', 'Punjabi', 'Bengali', 'Rajasthani', 'Kerala', 'Pan Indian', 'Modern', 'Destination'];
 export const MOOD_FILTERS = ['All', 'Romantic', 'Festive', 'Royal', 'Modern', 'Rustic', 'Playful'];
 
-export const TRENDING_TEMPLATE_IDS = ['maharaja-gold', 'crimson-shaadi', 'sangeet-nights', 'royal-amethyst'];
+export const TRENDING_TEMPLATE_IDS = ['royal-noor', 'maharaja-gold', 'crimson-shaadi', 'sangeet-nights'];
 
 export function getTemplateById(id: string): WeddingTemplate | undefined {
   return TEMPLATES.find(t => t.id === id);
