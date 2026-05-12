@@ -4,8 +4,8 @@ A luxury digital Indian wedding invitation platform called **Veloria** that allo
 
 ## Run & Operate
 
-- `PORT=20823 BASE_PATH=/ pnpm --filter @workspace/wedding-platform run dev` — run the Veloria frontend (port 20823)
-- `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `PORT=5000 BASE_PATH=/ pnpm --filter @workspace/wedding-platform run dev` — run the Veloria frontend (port 5000)
+- `PORT=8080 pnpm --filter @workspace/api-server run dev` — run the API server (port 8080)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas
