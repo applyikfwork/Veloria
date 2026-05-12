@@ -1,3 +1,39 @@
+export type WizardStep =
+  | 'couple-details'
+  | 'family-details'
+  | 'events'
+  | 'design-customize'
+  | 'music'
+  | 'photos'
+  | 'rsvp'
+  | 'live-preview'
+  | 'export-share';
+
+export type CustomizableField =
+  | 'accent-color'
+  | 'music-mood'
+  | 'language'
+  | 'hashtag'
+  | 'dress-code'
+  | 'gift-registry'
+  | 'live-stream'
+  | 'couple-photos'
+  | 'family-photos'
+  | 'love-story'
+  | 'family-message'
+  | 'blessing-quote'
+  | 'whatsapp-rsvp';
+
+export interface TemplateWizardConfig {
+  steps: WizardStep[];
+  customizableFields: CustomizableField[];
+  requiresPhotos: boolean;
+  requiresFamily: boolean;
+  requiresLoveStory: boolean;
+  maxEvents: number;
+  notes?: string;
+}
+
 export interface WeddingTemplate {
   id: string;
   name: string;
@@ -19,7 +55,35 @@ export interface WeddingTemplate {
   usedByCount: number;
   heroEmoji: string;
   previewBgClass: string;
+  wizard: TemplateWizardConfig;
 }
+
+const DEFAULT_FULL_WIZARD: TemplateWizardConfig = {
+  steps: ['couple-details', 'family-details', 'events', 'design-customize', 'music', 'photos', 'rsvp', 'live-preview', 'export-share'],
+  customizableFields: ['accent-color', 'music-mood', 'language', 'hashtag', 'couple-photos', 'family-photos', 'love-story', 'family-message', 'blessing-quote', 'whatsapp-rsvp', 'gift-registry', 'live-stream', 'dress-code'],
+  requiresPhotos: true,
+  requiresFamily: true,
+  requiresLoveStory: true,
+  maxEvents: 6,
+};
+
+const SHORT_WIZARD: TemplateWizardConfig = {
+  steps: ['couple-details', 'events', 'design-customize', 'rsvp', 'export-share'],
+  customizableFields: ['accent-color', 'music-mood', 'language', 'whatsapp-rsvp'],
+  requiresPhotos: false,
+  requiresFamily: false,
+  requiresLoveStory: false,
+  maxEvents: 2,
+};
+
+const MEDIUM_WIZARD: TemplateWizardConfig = {
+  steps: ['couple-details', 'family-details', 'events', 'design-customize', 'photos', 'rsvp', 'export-share'],
+  customizableFields: ['accent-color', 'music-mood', 'language', 'hashtag', 'couple-photos', 'family-message', 'blessing-quote', 'whatsapp-rsvp', 'gift-registry'],
+  requiresPhotos: true,
+  requiresFamily: true,
+  requiresLoveStory: false,
+  maxEvents: 4,
+};
 
 export const TEMPLATES: WeddingTemplate[] = [
   {
@@ -43,6 +107,7 @@ export const TEMPLATES: WeddingTemplate[] = [
     usedByCount: 4821,
     heroEmoji: '👑',
     previewBgClass: 'bg-gradient-to-br from-[#1A1200] via-[#3D2B00] to-[#1A1200]',
+    wizard: DEFAULT_FULL_WIZARD,
   },
   {
     id: 'bougainvillea-garden',
@@ -65,6 +130,7 @@ export const TEMPLATES: WeddingTemplate[] = [
     usedByCount: 1203,
     heroEmoji: '🌸',
     previewBgClass: 'bg-gradient-to-br from-[#3D0A2E] via-[#7B2D5E] to-[#3D0A2E]',
+    wizard: MEDIUM_WIZARD,
   },
   {
     id: 'midnight-silk',
@@ -87,6 +153,7 @@ export const TEMPLATES: WeddingTemplate[] = [
     usedByCount: 2341,
     heroEmoji: '🌙',
     previewBgClass: 'bg-gradient-to-br from-[#0A0A0F] via-[#1A1A2E] to-[#0A0A0F]',
+    wizard: MEDIUM_WIZARD,
   },
   {
     id: 'sindoor-dreams',
@@ -109,6 +176,7 @@ export const TEMPLATES: WeddingTemplate[] = [
     usedByCount: 987,
     heroEmoji: '🪷',
     previewBgClass: 'bg-gradient-to-br from-[#3D0000] via-[#8B0000] to-[#3D0000]',
+    wizard: DEFAULT_FULL_WIZARD,
   },
   {
     id: 'pastel-bloom',
@@ -131,6 +199,7 @@ export const TEMPLATES: WeddingTemplate[] = [
     usedByCount: 654,
     heroEmoji: '💜',
     previewBgClass: 'bg-gradient-to-br from-[#2D1B35] via-[#4A2B50] to-[#2D1B35]',
+    wizard: SHORT_WIZARD,
   },
   {
     id: 'sangeet-nights',
@@ -153,6 +222,7 @@ export const TEMPLATES: WeddingTemplate[] = [
     usedByCount: 3102,
     heroEmoji: '💃',
     previewBgClass: 'bg-gradient-to-br from-[#2A0010] via-[#6B0030] to-[#2A0010]',
+    wizard: SHORT_WIZARD,
   },
   {
     id: 'mehndi-magic',
@@ -175,6 +245,7 @@ export const TEMPLATES: WeddingTemplate[] = [
     usedByCount: 1456,
     heroEmoji: '🌿',
     previewBgClass: 'bg-gradient-to-br from-[#1A0A00] via-[#4A2500] to-[#1A0A00]',
+    wizard: SHORT_WIZARD,
   },
   {
     id: 'kerala-mural',
@@ -197,6 +268,7 @@ export const TEMPLATES: WeddingTemplate[] = [
     usedByCount: 743,
     heroEmoji: '🪔',
     previewBgClass: 'bg-gradient-to-br from-[#001A00] via-[#003300] to-[#001A00]',
+    wizard: DEFAULT_FULL_WIZARD,
   },
   {
     id: 'champagne-toast',
@@ -219,6 +291,7 @@ export const TEMPLATES: WeddingTemplate[] = [
     usedByCount: 892,
     heroEmoji: '🥂',
     previewBgClass: 'bg-gradient-to-br from-[#1A1400] via-[#2E2400] to-[#1A1400]',
+    wizard: MEDIUM_WIZARD,
   },
   {
     id: 'haldi-sunshine',
@@ -241,6 +314,7 @@ export const TEMPLATES: WeddingTemplate[] = [
     usedByCount: 1834,
     heroEmoji: '☀️',
     previewBgClass: 'bg-gradient-to-br from-[#1A1000] via-[#3D2800] to-[#1A1000]',
+    wizard: SHORT_WIZARD,
   },
   {
     id: 'royal-amethyst',
@@ -263,6 +337,7 @@ export const TEMPLATES: WeddingTemplate[] = [
     usedByCount: 567,
     heroEmoji: '💜',
     previewBgClass: 'bg-gradient-to-br from-[#0F0020] via-[#2D0060] to-[#0F0020]',
+    wizard: DEFAULT_FULL_WIZARD,
   },
   {
     id: 'ivory-minimal',
@@ -285,6 +360,7 @@ export const TEMPLATES: WeddingTemplate[] = [
     usedByCount: 2109,
     heroEmoji: '🤍',
     previewBgClass: 'bg-gradient-to-br from-[#0A0A0A] via-[#1A1A1A] to-[#0A0A0A]',
+    wizard: MEDIUM_WIZARD,
   },
   {
     id: 'tamil-kolam',
@@ -307,6 +383,7 @@ export const TEMPLATES: WeddingTemplate[] = [
     usedByCount: 612,
     heroEmoji: '🪷',
     previewBgClass: 'bg-gradient-to-br from-[#1A0A00] via-[#3D1F00] to-[#1A0A00]',
+    wizard: DEFAULT_FULL_WIZARD,
   },
   {
     id: 'punjabi-phulkari',
@@ -329,6 +406,7 @@ export const TEMPLATES: WeddingTemplate[] = [
     usedByCount: 1267,
     heroEmoji: '🎊',
     previewBgClass: 'bg-gradient-to-br from-[#1A0500] via-[#4A1500] to-[#1A0500]',
+    wizard: MEDIUM_WIZARD,
   },
   {
     id: 'garden-party',
@@ -351,6 +429,7 @@ export const TEMPLATES: WeddingTemplate[] = [
     usedByCount: 389,
     heroEmoji: '🌻',
     previewBgClass: 'bg-gradient-to-br from-[#001A06] via-[#003010] to-[#001A06]',
+    wizard: SHORT_WIZARD,
   },
   {
     id: 'starry-night',
@@ -373,6 +452,7 @@ export const TEMPLATES: WeddingTemplate[] = [
     usedByCount: 1876,
     heroEmoji: '⭐',
     previewBgClass: 'bg-gradient-to-br from-[#000010] via-[#000830] to-[#000010]',
+    wizard: MEDIUM_WIZARD,
   },
   {
     id: 'crimson-shaadi',
@@ -395,6 +475,7 @@ export const TEMPLATES: WeddingTemplate[] = [
     usedByCount: 3567,
     heroEmoji: '❤️',
     previewBgClass: 'bg-gradient-to-br from-[#1A0000] via-[#4A0000] to-[#1A0000]',
+    wizard: DEFAULT_FULL_WIZARD,
   },
   {
     id: 'coral-sunset',
@@ -417,6 +498,7 @@ export const TEMPLATES: WeddingTemplate[] = [
     usedByCount: 421,
     heroEmoji: '🌅',
     previewBgClass: 'bg-gradient-to-br from-[#1A0500] via-[#3D1500] to-[#1A0500]',
+    wizard: SHORT_WIZARD,
   },
   {
     id: 'bengal-baul',
@@ -439,6 +521,7 @@ export const TEMPLATES: WeddingTemplate[] = [
     usedByCount: 334,
     heroEmoji: '🎭',
     previewBgClass: 'bg-gradient-to-br from-[#0A0A00] via-[#2A2000] to-[#0A0A00]',
+    wizard: DEFAULT_FULL_WIZARD,
   },
   {
     id: 'silver-screen',
@@ -461,6 +544,7 @@ export const TEMPLATES: WeddingTemplate[] = [
     usedByCount: 2089,
     heroEmoji: '🎬',
     previewBgClass: 'bg-gradient-to-br from-[#0A0015] via-[#1E0035] to-[#0A0015]',
+    wizard: MEDIUM_WIZARD,
   },
 ];
 
@@ -507,4 +591,19 @@ export function filterTemplates(
     if (!showPremium && t.isPremium) return false;
     return true;
   });
+}
+
+export function getWizardStepLabel(step: WizardStep): string {
+  const labels: Record<WizardStep, string> = {
+    'couple-details': 'Couple Details',
+    'family-details': 'Family Details',
+    'events': 'Events',
+    'design-customize': 'Customize',
+    'music': 'Music',
+    'photos': 'Photos',
+    'rsvp': 'RSVP',
+    'live-preview': 'Preview',
+    'export-share': 'Share',
+  };
+  return labels[step];
 }
