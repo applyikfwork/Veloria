@@ -42,8 +42,8 @@ export default function CreateInvitationPage() {
 
   if (!templateModule) {
     return (
-      <div className="min-h-screen bg-[#0B0B0F] flex items-center justify-center">
-        <div className="text-white/40 text-sm">Loading template...</div>
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-foreground/40 text-sm">Loading template...</div>
       </div>
     );
   }
@@ -94,7 +94,7 @@ export default function CreateInvitationPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0B0B0F] text-foreground flex flex-col overflow-hidden">
+    <div className="min-h-screen bg-background text-foreground flex flex-col overflow-hidden">
       {/* Floating particles */}
       <div className="absolute inset-0 pointer-events-none">
         {[...Array(12)].map((_, i) => (
@@ -102,22 +102,22 @@ export default function CreateInvitationPage() {
             key={i}
             className="absolute w-1 h-1 rounded-full"
             style={{ backgroundColor: templateModule.accentColor + '40' }}
-            initial={{ x: Math.random() * 100 + '%', y: Math.random() * 100 + '%', opacity: 0.2 }}
-            animate={{ y: [null, Math.random() * 100 + '%'], opacity: [0.2, 0.5, 0.2] }}
+            initial={{ x: Math.random() * 100 + '%', y: Math.random() * 100 + '%', opacity: 0.15 }}
+            animate={{ y: [null, Math.random() * 100 + '%'], opacity: [0.15, 0.4, 0.15] }}
             transition={{ duration: Math.random() * 20 + 10, repeat: Infinity, ease: 'linear' }}
           />
         ))}
       </div>
 
       {/* Header */}
-      <header className="relative z-10 px-6 py-4 flex items-center justify-between bg-black/20 backdrop-blur-md border-b border-white/5">
+      <header className="relative z-10 px-6 py-4 flex items-center justify-between bg-background/95 backdrop-blur-md border-b border-border/30">
         <div className="flex items-center gap-4">
           <Button
             variant="ghost"
             size="icon"
             onClick={prevStep}
             disabled={currentStep === 1}
-            className="text-white hover:bg-white/10"
+            className="text-foreground hover:bg-muted/40"
           >
             <ChevronLeft className="h-6 w-6" />
           </Button>
@@ -133,21 +133,21 @@ export default function CreateInvitationPage() {
                 {templateModule.heroEmoji} {templateModule.name}
               </span>
             </div>
-            <h1 className="text-lg font-serif text-white">{stepName}</h1>
+            <h1 className="text-lg font-serif text-foreground">{stepName}</h1>
           </div>
         </div>
         <Button
           variant="ghost"
           size="icon"
           onClick={() => setLocation('/templates')}
-          className="text-white hover:bg-white/10"
+          className="text-foreground hover:bg-muted/40"
         >
           <X className="h-6 w-6" />
         </Button>
       </header>
 
       {/* Progress */}
-      <div className="relative z-10 px-6 py-3 bg-black/10 border-b border-white/5">
+      <div className="relative z-10 px-6 py-3 bg-muted/20 border-b border-border/20">
         <div className="flex items-center gap-1 mb-2">
           {Array.from({ length: totalSteps }).map((_, i) => {
             const stepNum = i + 1;
@@ -162,16 +162,16 @@ export default function CreateInvitationPage() {
                 <div
                   className="w-6 h-6 rounded-full flex items-center justify-center text-[10px] font-bold transition-all"
                   style={{
-                    backgroundColor: isCompleted ? templateModule.accentColor : isCurrent ? templateModule.accentColor + '30' : '#ffffff10',
+                    backgroundColor: isCompleted ? templateModule.accentColor : isCurrent ? templateModule.accentColor + '25' : 'rgba(0,0,0,0.07)',
                     border: isCurrent ? `2px solid ${templateModule.accentColor}` : 'none',
-                    color: isCompleted ? '#000' : isCurrent ? templateModule.accentColor : '#ffffff30',
+                    color: isCompleted ? '#fff' : isCurrent ? templateModule.accentColor : 'rgba(0,0,0,0.30)',
                   }}
                 >
                   {isCompleted ? <Check className="h-3 w-3" /> : stepNum}
                 </div>
                 <span
                   className="text-[8px] uppercase tracking-wider hidden md:block truncate max-w-[60px] text-center"
-                  style={{ color: isCurrent ? templateModule.accentColor : isCompleted ? templateModule.accentColor + '60' : '#ffffff20' }}
+                  style={{ color: isCurrent ? templateModule.accentColor : isCompleted ? templateModule.accentColor + '80' : 'rgba(0,0,0,0.25)' }}
                 >
                   {i < wizardSteps.length ? wizardSteps[i].title.split(' ')[0] : 'Share'}
                 </span>
@@ -181,7 +181,7 @@ export default function CreateInvitationPage() {
         </div>
         <Progress
           value={(currentStep / totalSteps) * 100}
-          className="h-0.5 rounded-none bg-white/5"
+          className="h-0.5 rounded-none bg-muted/50"
         />
       </div>
 
@@ -222,12 +222,12 @@ export default function CreateInvitationPage() {
       </main>
 
       {/* Footer */}
-      <footer className="relative z-10 px-6 py-4 bg-black/40 backdrop-blur-xl border-t border-white/5 flex items-center justify-between md:justify-end gap-4">
+      <footer className="relative z-10 px-6 py-4 bg-background/95 backdrop-blur-xl border-t border-border/20 flex items-center justify-between md:justify-end gap-4">
         <Button
           variant="ghost"
           onClick={prevStep}
           disabled={currentStep === 1}
-          className="text-white md:hidden"
+          className="text-foreground md:hidden"
         >
           Back
         </Button>

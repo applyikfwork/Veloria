@@ -50,7 +50,6 @@ export default function CheckinPage() {
     if (isAuthenticated && invitationId) {
       fetchGuests();
       
-      // Subscribe to real-time updates
       const subscription = supabase
         .channel(`guests-checkin-${invitationId}`)
         .on('postgres_changes', { 
@@ -170,18 +169,18 @@ export default function CheckinPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#0B0B0F] flex items-center justify-center p-6">
+      <div className="min-h-screen bg-background flex items-center justify-center p-6">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="max-w-md w-full"
         >
-          <Card className="bg-white/5 backdrop-blur-xl border-white/10 p-8 text-center space-y-6">
+          <Card className="bg-card border-border/40 shadow-lg p-8 text-center space-y-6">
             <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
               <QrCode className="h-8 w-8 text-primary" />
             </div>
             <div className="space-y-2">
-              <CardTitle className="text-3xl font-serif text-white">Check-in Terminal</CardTitle>
+              <CardTitle className="text-3xl font-serif text-foreground">Check-in Terminal</CardTitle>
               <p className="text-muted-foreground">Please enter your 4-digit PIN to access the dashboard.</p>
             </div>
             <form onSubmit={handleAuth} className="space-y-4">
@@ -191,14 +190,14 @@ export default function CheckinPage() {
                 value={pin}
                 onChange={(e) => setPin(e.target.value)}
                 placeholder="••••"
-                className="text-center text-4xl tracking-[0.5em] h-16 bg-white/5 border-white/10"
+                className="text-center text-4xl tracking-[0.5em] h-16 bg-input border-border/50"
                 autoFocus
               />
               <Button type="submit" className="w-full h-12 bg-primary text-primary-foreground">
                 Unlock <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </form>
-            <p className="text-xs text-primary/40 italic">Demo PIN: 1234</p>
+            <p className="text-xs text-primary/50 italic">Demo PIN: 1234</p>
           </Card>
         </motion.div>
       </div>
@@ -206,16 +205,16 @@ export default function CheckinPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0B0B0F] text-foreground font-sans pb-24">
+    <div className="min-h-screen bg-background text-foreground font-sans pb-24">
       {/* Top Bar */}
-      <header className="sticky top-0 z-50 bg-[#0B0B0F]/80 backdrop-blur-lg border-b border-white/5 px-6 py-4">
+      <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-lg border-b border-border/20 px-6 py-4">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
               <UserCheck className="h-5 w-5 text-primary-foreground" />
             </div>
             <div>
-              <h1 className="text-lg font-serif text-white leading-none">Wedding Check-in</h1>
+              <h1 className="text-lg font-serif text-foreground leading-none">Wedding Check-in</h1>
               <p className="text-[10px] uppercase tracking-widest text-primary">Live Dashboard</p>
             </div>
           </div>
@@ -226,7 +225,7 @@ export default function CheckinPage() {
               sessionStorage.removeItem(`auth-checkin-${invitationId}`);
               setIsAuthenticated(false);
             }}
-            className="text-muted-foreground hover:text-white"
+            className="text-muted-foreground hover:text-foreground"
           >
             <LogOut className="h-4 w-4 mr-2" /> Logout
           </Button>
@@ -237,15 +236,15 @@ export default function CheckinPage() {
         {/* Stats Grid */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
-            { label: "Total Guests", val: stats.total, icon: Users, color: "text-blue-400" },
+            { label: "Total Guests", val: stats.total, icon: Users, color: "text-blue-600" },
             { label: "Confirmed", val: stats.confirmed, icon: CheckCircle, color: "text-primary" },
-            { label: "Checked In", val: stats.checkedIn, icon: UserCheck, color: "text-green-400" },
-            { label: "Pending", val: stats.pending, icon: Clock, color: "text-orange-400" },
+            { label: "Checked In", val: stats.checkedIn, icon: UserCheck, color: "text-green-600" },
+            { label: "Pending", val: stats.pending, icon: Clock, color: "text-orange-500" },
           ].map((stat, i) => (
-            <Card key={i} className="bg-white/5 border-white/10">
+            <Card key={i} className="bg-card border-border/30 shadow-sm">
               <CardContent className="p-4 flex flex-col items-center text-center">
                 <stat.icon className={`h-5 w-5 mb-2 ${stat.color}`} />
-                <div className="text-2xl font-bold text-white">{stat.val}</div>
+                <div className="text-2xl font-bold text-foreground">{stat.val}</div>
                 <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{stat.label}</div>
               </CardContent>
             </Card>
@@ -253,7 +252,7 @@ export default function CheckinPage() {
         </div>
 
         {/* Scan Bar */}
-        <Card className="bg-primary/5 border-primary/20">
+        <Card className="bg-primary/5 border-primary/20 shadow-sm">
           <CardContent className="p-6">
             <div className="flex flex-col md:flex-row gap-4">
               <div className="relative flex-1">
@@ -263,7 +262,7 @@ export default function CheckinPage() {
                   onChange={(e) => setScannedCode(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleCheckIn(scannedCode)}
                   placeholder="Paste QR Code or Scan..."
-                  className="pl-12 h-14 bg-white/5 border-white/10 text-lg"
+                  className="pl-12 h-14 bg-background border-border/40 text-lg"
                 />
               </div>
               <Button 
@@ -279,14 +278,14 @@ export default function CheckinPage() {
         {/* Guest List */}
         <div className="space-y-4">
           <div className="flex items-center justify-between gap-4">
-            <h2 className="text-xl font-serif text-white">Guest List</h2>
+            <h2 className="text-xl font-serif text-foreground">Guest List</h2>
             <div className="relative max-w-xs w-full">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input 
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Search name or phone..."
-                className="pl-10 bg-white/5 border-white/10"
+                className="pl-10 bg-background border-border/40"
               />
             </div>
           </div>
@@ -296,20 +295,20 @@ export default function CheckinPage() {
               <motion.div 
                 key={guest.id}
                 layout
-                className={`flex items-center justify-between p-4 rounded-xl border transition-all ${
+                className={`flex items-center justify-between p-4 rounded-xl border transition-all shadow-sm ${
                   guest.checked_in 
-                  ? "bg-green-500/5 border-green-500/20" 
-                  : "bg-white/5 border-white/10"
+                  ? "bg-green-50 border-green-200" 
+                  : "bg-card border-border/30"
                 }`}
               >
                 <div className="flex items-center gap-4">
                   <div className={`w-12 h-12 rounded-full flex items-center justify-center font-bold ${
-                    guest.checked_in ? "bg-green-500 text-white" : "bg-white/10 text-white/40"
+                    guest.checked_in ? "bg-green-500 text-white" : "bg-muted text-foreground/40"
                   }`}>
                     {guest.name[0]}
                   </div>
                   <div>
-                    <h3 className="font-medium text-white">{guest.name}</h3>
+                    <h3 className="font-medium text-foreground">{guest.name}</h3>
                     <div className="flex items-center gap-3 text-xs text-muted-foreground mt-1">
                       <span className="flex items-center gap-1">
                         <TableIcon className="h-3 w-3" /> Table: {guest.table_number || "TBD"}
@@ -324,7 +323,7 @@ export default function CheckinPage() {
                 <div className="flex items-center gap-4">
                   {guest.checked_in ? (
                     <div className="flex flex-col items-end">
-                      <span className="text-green-500 text-xs font-bold uppercase flex items-center gap-1">
+                      <span className="text-green-600 text-xs font-bold uppercase flex items-center gap-1">
                         <CheckCircle className="h-3 w-3" /> Checked In
                       </span>
                       <span className="text-[10px] text-muted-foreground">
@@ -346,8 +345,8 @@ export default function CheckinPage() {
             ))}
 
             {filteredGuests.length === 0 && (
-              <div className="text-center py-24 bg-white/5 rounded-2xl border border-dashed border-white/10">
-                <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-20" />
+              <div className="text-center py-24 bg-muted/20 rounded-2xl border border-dashed border-border/30">
+                <Users className="h-12 w-12 text-muted-foreground mx-auto mb-4 opacity-30" />
                 <p className="text-muted-foreground">No guests found.</p>
               </div>
             )}

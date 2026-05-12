@@ -53,14 +53,14 @@ function FieldText({ field, formData, onFieldChange, accentColor }: FieldProps) 
   const value = getByPath(formData, field.key) || '';
   return (
     <div className="space-y-2">
-      <Label className="text-white/70 text-xs uppercase tracking-widest">
+      <Label className="text-foreground/70 text-xs uppercase tracking-widest">
         {field.label}{field.required && <span style={{ color: accentColor }}> *</span>}
       </Label>
       <Input
         value={value}
         onChange={e => onFieldChange(field.key, e.target.value)}
         placeholder={field.placeholder}
-        className="bg-white/5 border-white/10 text-white focus:border-primary focus:ring-primary/20 h-12"
+        className="bg-background border-border/50 text-foreground focus:border-primary focus:ring-primary/20 h-12"
       />
     </div>
   );
@@ -71,16 +71,16 @@ function FieldTextarea({ field, formData, onFieldChange }: FieldProps) {
   return (
     <div className="space-y-2">
       {field.label && (
-        <Label className="text-white/70 text-xs uppercase tracking-widest">{field.label}</Label>
+        <Label className="text-foreground/70 text-xs uppercase tracking-widest">{field.label}</Label>
       )}
       <Textarea
         value={value}
         onChange={e => onFieldChange(field.key, e.target.value)}
         placeholder={field.placeholder}
         rows={4}
-        className="bg-white/5 border-white/10 text-white focus:border-primary focus:ring-primary/20 resize-none"
+        className="bg-background border-border/50 text-foreground focus:border-primary focus:ring-primary/20 resize-none"
       />
-      {field.hint && <p className="text-xs text-white/30 italic">{field.hint}</p>}
+      {field.hint && <p className="text-xs text-foreground/40 italic">{field.hint}</p>}
     </div>
   );
 }
@@ -106,9 +106,9 @@ function FieldPhoto({ field, formData, onFieldChange, accentColor }: FieldProps)
   return (
     <div className="space-y-3 flex flex-col items-center">
       {field.label && (
-        <Label className="text-white/70 text-xs uppercase tracking-widest self-start">{field.label}</Label>
+        <Label className="text-foreground/70 text-xs uppercase tracking-widest self-start">{field.label}</Label>
       )}
-      <label className="w-36 h-36 rounded-full border-2 border-dashed border-white/20 bg-white/5 flex flex-col items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-white/10 transition-all group overflow-hidden relative">
+      <label className="w-36 h-36 rounded-full border-2 border-dashed border-border/50 bg-muted/20 flex flex-col items-center justify-center cursor-pointer hover:border-primary/50 hover:bg-primary/5 transition-all group overflow-hidden relative">
         <input type="file" ref={fileRef} className="hidden" accept="image/*" onChange={handleFile} />
         {loading ? (
           <Loader2 className="h-6 w-6 text-primary animate-spin" />
@@ -121,15 +121,15 @@ function FieldPhoto({ field, formData, onFieldChange, accentColor }: FieldProps)
           </>
         ) : (
           <>
-            <Camera className="h-7 w-7 text-white/30 group-hover:text-primary transition-colors mb-1" />
-            <span className="text-[10px] text-white/30">Upload</span>
+            <Camera className="h-7 w-7 text-foreground/30 group-hover:text-primary transition-colors mb-1" />
+            <span className="text-[10px] text-foreground/30">Upload</span>
           </>
         )}
       </label>
       {value && (
         <button
           onClick={() => onFieldChange(field.key, null)}
-          className="text-[10px] text-white/30 hover:text-red-400 transition-colors"
+          className="text-[10px] text-foreground/40 hover:text-red-500 transition-colors"
         >
           Remove photo
         </button>
@@ -167,22 +167,22 @@ function FieldPhotoArray({ field, formData, onFieldChange }: FieldProps) {
     <div className="space-y-3">
       {field.label && (
         <div className="flex items-center gap-2">
-          <Label className="text-white/70 text-xs uppercase tracking-widest">{field.label}</Label>
-          <span className="text-[10px] text-white/30">{arr.filter(Boolean).length}/{field.maxItems || 4} uploaded</span>
+          <Label className="text-foreground/70 text-xs uppercase tracking-widest">{field.label}</Label>
+          <span className="text-[10px] text-foreground/30">{arr.filter(Boolean).length}/{field.maxItems || 4} uploaded</span>
         </div>
       )}
-      {field.hint && <p className="text-xs text-white/30 italic mb-2">{field.hint}</p>}
+      {field.hint && <p className="text-xs text-foreground/40 italic mb-2">{field.hint}</p>}
       <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
         {Array.from({ length: field.maxItems || 4 }).map((_, i) => {
           const photo = arr[i] || null;
           return (
             <label
               key={i}
-              className="aspect-square rounded-xl border-2 border-dashed border-white/10 bg-white/5 hover:border-primary/40 hover:bg-white/10 transition-all cursor-pointer group relative overflow-hidden"
+              className="aspect-square rounded-xl border-2 border-dashed border-border/40 bg-muted/20 hover:border-primary/40 hover:bg-primary/5 transition-all cursor-pointer group relative overflow-hidden"
             >
               <input type="file" className="hidden" accept="image/*" onChange={e => handleFile(i, e)} />
               {loading === i ? (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/60">
+                <div className="absolute inset-0 flex items-center justify-center bg-black/20">
                   <Loader2 className="h-5 w-5 text-primary animate-spin" />
                 </div>
               ) : photo ? (
@@ -199,8 +199,8 @@ function FieldPhotoArray({ field, formData, onFieldChange }: FieldProps) {
                 </>
               ) : (
                 <div className="absolute inset-0 flex flex-col items-center justify-center">
-                  <Plus className="h-5 w-5 text-white/20 group-hover:text-primary transition-colors" />
-                  <span className="text-[9px] text-white/20 mt-1">{i + 1}</span>
+                  <Plus className="h-5 w-5 text-foreground/20 group-hover:text-primary transition-colors" />
+                  <span className="text-[9px] text-foreground/20 mt-1">{i + 1}</span>
                 </div>
               )}
             </label>
@@ -256,7 +256,7 @@ function FieldEventList({ field, formData, onFieldChange }: FieldProps) {
           variant="outline"
           size="sm"
           onClick={() => addEvent('Custom Event')}
-          className="rounded-full border-white/20 text-white/60 hover:bg-white/10 bg-transparent"
+          className="rounded-full border-border/40 text-foreground/60 hover:bg-muted/30 bg-transparent"
           disabled={(field.maxItems || 6) <= events.length}
         >
           <Plus className="h-3 w-3 mr-1" /> Custom
@@ -265,7 +265,7 @@ function FieldEventList({ field, formData, onFieldChange }: FieldProps) {
 
       <div className="space-y-3">
         {events.map((event, idx) => (
-          <div key={event.id} className="rounded-2xl border border-white/10 bg-white/5 overflow-hidden">
+          <div key={event.id} className="rounded-2xl border border-border/40 bg-card overflow-hidden shadow-sm">
             <div
               className="px-5 py-4 flex items-center justify-between cursor-pointer"
               onClick={() => setExpandedIdx(expandedIdx === idx ? null : idx)}
@@ -275,18 +275,18 @@ function FieldEventList({ field, formData, onFieldChange }: FieldProps) {
                   {idx + 1}
                 </div>
                 <div>
-                  <p className="text-white text-sm font-medium">{event.name}</p>
-                  <p className="text-xs text-white/40">{event.date || 'Date not set'} · {event.venue || 'Venue not set'}</p>
+                  <p className="text-foreground text-sm font-medium">{event.name}</p>
+                  <p className="text-xs text-foreground/40">{event.date || 'Date not set'} · {event.venue || 'Venue not set'}</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
                 <button
                   onClick={e => { e.stopPropagation(); remove(idx); }}
-                  className="h-7 w-7 rounded-full bg-white/5 hover:bg-red-500/20 flex items-center justify-center text-white/30 hover:text-red-400 transition-colors"
+                  className="h-7 w-7 rounded-full bg-muted/40 hover:bg-red-500/20 flex items-center justify-center text-foreground/30 hover:text-red-500 transition-colors"
                 >
                   <Trash2 className="h-3.5 w-3.5" />
                 </button>
-                {expandedIdx === idx ? <ChevronUp className="h-4 w-4 text-white/30" /> : <ChevronDown className="h-4 w-4 text-white/30" />}
+                {expandedIdx === idx ? <ChevronUp className="h-4 w-4 text-foreground/30" /> : <ChevronDown className="h-4 w-4 text-foreground/30" />}
               </div>
             </div>
 
@@ -296,27 +296,27 @@ function FieldEventList({ field, formData, onFieldChange }: FieldProps) {
                   initial={{ height: 0, opacity: 0 }}
                   animate={{ height: 'auto', opacity: 1 }}
                   exit={{ height: 0, opacity: 0 }}
-                  className="px-5 pb-5 border-t border-white/5 pt-4"
+                  className="px-5 pb-5 border-t border-border/20 pt-4"
                 >
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-3">
                       <div>
                         <Label className="text-xs uppercase tracking-widest text-primary/70 mb-1.5 block">Event Name</Label>
-                        <Input value={event.name} onChange={e => update(idx, 'name', e.target.value)} className="bg-white/5 border-white/10 text-white focus:border-primary h-10" />
+                        <Input value={event.name} onChange={e => update(idx, 'name', e.target.value)} className="bg-background border-border/50 text-foreground focus:border-primary h-10" />
                       </div>
                       <div className="grid grid-cols-2 gap-3">
                         <div>
                           <Label className="text-xs uppercase tracking-widest text-primary/70 mb-1.5 block">Date</Label>
                           <div className="relative">
-                            <Calendar className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-white/30" />
-                            <Input type="date" value={event.date} onChange={e => update(idx, 'date', e.target.value)} className="bg-white/5 border-white/10 text-white pl-8 focus:border-primary h-10 text-sm" />
+                            <Calendar className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-foreground/30" />
+                            <Input type="date" value={event.date} onChange={e => update(idx, 'date', e.target.value)} className="bg-background border-border/50 text-foreground pl-8 focus:border-primary h-10 text-sm" />
                           </div>
                         </div>
                         <div>
                           <Label className="text-xs uppercase tracking-widest text-primary/70 mb-1.5 block">Time</Label>
                           <div className="relative">
-                            <Clock className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-white/30" />
-                            <Input type="time" value={event.time} onChange={e => update(idx, 'time', e.target.value)} className="bg-white/5 border-white/10 text-white pl-8 focus:border-primary h-10 text-sm" />
+                            <Clock className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-foreground/30" />
+                            <Input type="time" value={event.time} onChange={e => update(idx, 'time', e.target.value)} className="bg-background border-border/50 text-foreground pl-8 focus:border-primary h-10 text-sm" />
                           </div>
                         </div>
                       </div>
@@ -324,13 +324,13 @@ function FieldEventList({ field, formData, onFieldChange }: FieldProps) {
                     <div className="space-y-3">
                       <div>
                         <Label className="text-xs uppercase tracking-widest text-primary/70 mb-1.5 block">Venue Name</Label>
-                        <Input value={event.venue} onChange={e => update(idx, 'venue', e.target.value)} placeholder="e.g. Taj Palace" className="bg-white/5 border-white/10 text-white focus:border-primary h-10" />
+                        <Input value={event.venue} onChange={e => update(idx, 'venue', e.target.value)} placeholder="e.g. Taj Palace" className="bg-background border-border/50 text-foreground focus:border-primary h-10" />
                       </div>
                       <div>
                         <Label className="text-xs uppercase tracking-widest text-primary/70 mb-1.5 block">Address</Label>
                         <div className="relative">
-                          <MapPin className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-white/30" />
-                          <Input value={event.address} onChange={e => update(idx, 'address', e.target.value)} placeholder="Street, City" className="bg-white/5 border-white/10 text-white pl-8 focus:border-primary h-10" />
+                          <MapPin className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-foreground/30" />
+                          <Input value={event.address} onChange={e => update(idx, 'address', e.target.value)} placeholder="Street, City" className="bg-background border-border/50 text-foreground pl-8 focus:border-primary h-10" />
                         </div>
                       </div>
                     </div>
@@ -342,7 +342,7 @@ function FieldEventList({ field, formData, onFieldChange }: FieldProps) {
         ))}
 
         {events.length === 0 && (
-          <div className="text-center py-10 text-white/20">
+          <div className="text-center py-10 text-foreground/25">
             <p className="text-sm">Add your first event using the buttons above</p>
           </div>
         )}
@@ -355,10 +355,10 @@ function FieldToggle({ field, formData, onFieldChange, accentColor }: FieldProps
   const value = getByPath(formData, field.key);
   const isOn = value === true || value === undefined;
   return (
-    <div className="p-6 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-between">
+    <div className="p-6 rounded-2xl bg-card border border-border/30 shadow-sm flex items-center justify-between">
       <div className="space-y-1">
-        {field.label && <p className="text-white font-medium">{field.label}</p>}
-        {field.hint && <p className="text-xs text-white/40 max-w-sm">{field.hint}</p>}
+        {field.label && <p className="text-foreground font-medium">{field.label}</p>}
+        {field.hint && <p className="text-xs text-foreground/40 max-w-sm">{field.hint}</p>}
       </div>
       <Switch
         checked={isOn}
@@ -383,12 +383,12 @@ function FieldTextPair({ field, formData, onFieldChange }: FieldProps) {
     <div className="space-y-3">
       {labels.map((label, i) => (
         <div key={i} className="space-y-1.5">
-          <Label className="text-white/70 text-xs uppercase tracking-widest">{label}</Label>
+          <Label className="text-foreground/70 text-xs uppercase tracking-widest">{label}</Label>
           <Input
             value={arr[i] || ''}
             onChange={e => update(i, e.target.value)}
             placeholder={placeholders[i]}
-            className="bg-white/5 border-white/10 text-white focus:border-primary h-11"
+            className="bg-background border-border/50 text-foreground focus:border-primary h-11"
           />
         </div>
       ))}
@@ -403,9 +403,9 @@ function FieldChoice({ field, formData, onFieldChange, accentColor }: FieldProps
   return (
     <div className="space-y-3">
       {field.label && (
-        <Label className="text-white/70 text-xs uppercase tracking-widest">{field.label}</Label>
+        <Label className="text-foreground/70 text-xs uppercase tracking-widest">{field.label}</Label>
       )}
-      {field.hint && <p className="text-xs text-white/30 italic mb-1">{field.hint}</p>}
+      {field.hint && <p className="text-xs text-foreground/40 italic mb-1">{field.hint}</p>}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {(field.options || []).map(opt => {
           const selected = value === opt;
@@ -416,18 +416,18 @@ function FieldChoice({ field, formData, onFieldChange, accentColor }: FieldProps
               onClick={() => onFieldChange(field.key, opt)}
               className="p-4 rounded-2xl border-2 transition-all text-left"
               style={{
-                borderColor: selected ? accentColor : 'rgba(255,255,255,0.1)',
-                backgroundColor: selected ? accentColor + '18' : 'rgba(255,255,255,0.03)',
+                borderColor: selected ? accentColor : 'rgba(0,0,0,0.12)',
+                backgroundColor: selected ? accentColor + '18' : 'rgba(0,0,0,0.02)',
               }}
             >
               <div className="flex items-center gap-2.5">
                 <div
                   className="w-4 h-4 rounded-full border-2 flex items-center justify-center transition-all flex-shrink-0"
-                  style={{ borderColor: selected ? accentColor : 'rgba(255,255,255,0.25)' }}
+                  style={{ borderColor: selected ? accentColor : 'rgba(0,0,0,0.25)' }}
                 >
                   {selected && <div className="w-2 h-2 rounded-full" style={{ backgroundColor: accentColor }} />}
                 </div>
-                <span className="text-sm font-medium" style={{ color: selected ? '#fff' : 'rgba(255,255,255,0.55)' }}>
+                <span className="text-sm font-medium" style={{ color: selected ? accentColor : 'rgba(0,0,0,0.55)' }}>
                   {formatLabel(opt)}
                 </span>
               </div>
@@ -471,8 +471,8 @@ export default function WizardEngine({ step, formData, onFieldChange, accentColo
   return (
     <div className="w-full max-w-4xl mx-auto space-y-8">
       <div className="text-center mb-10">
-        <h2 className="text-3xl md:text-4xl font-serif text-white mb-3">{step.title}</h2>
-        {step.subtitle && <p className="text-white/40 text-sm max-w-xl mx-auto leading-relaxed">{step.subtitle}</p>}
+        <h2 className="text-3xl md:text-4xl font-serif text-foreground mb-3">{step.title}</h2>
+        {step.subtitle && <p className="text-foreground/40 text-sm max-w-xl mx-auto leading-relaxed">{step.subtitle}</p>}
       </div>
 
       {isTwoCol ? (

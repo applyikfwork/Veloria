@@ -75,7 +75,7 @@ export default function ExportShareStep({ formData, onNext, onBack, savedSlug, i
   };
 
   const generateQR = () => {
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(invitationUrl)}&color=D4AF37&bgcolor=0B0B0F&margin=20`;
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(invitationUrl)}&color=1E0C03&bgcolor=FAF5EA&margin=20`;
     window.open(qrUrl, '_blank');
   };
 
@@ -122,8 +122,8 @@ export default function ExportShareStep({ formData, onNext, onBack, savedSlug, i
       id: "whatsapp",
       label: "WhatsApp",
       icon: <Smartphone className="h-5 w-5" />,
-      color: "text-green-400",
-      bg: "bg-green-400/10 border-green-400/20 hover:bg-green-400/20",
+      color: "text-green-600",
+      bg: "bg-green-50 border-green-200 hover:bg-green-100",
       action: shareWhatsApp,
       actionLabel: "Share",
     },
@@ -131,8 +131,8 @@ export default function ExportShareStep({ formData, onNext, onBack, savedSlug, i
       id: "copy",
       label: "Copy Link",
       icon: <Copy className="h-5 w-5" />,
-      color: "text-blue-400",
-      bg: "bg-blue-400/10 border-blue-400/20 hover:bg-blue-400/20",
+      color: "text-blue-600",
+      bg: "bg-blue-50 border-blue-200 hover:bg-blue-100",
       action: copyToClipboard,
       actionLabel: "Copy",
     },
@@ -141,7 +141,7 @@ export default function ExportShareStep({ formData, onNext, onBack, savedSlug, i
       label: "Share",
       icon: <Share2 className="h-5 w-5" />,
       color: "text-primary",
-      bg: "bg-primary/10 border-primary/20 hover:bg-primary/20",
+      bg: "bg-primary/8 border-primary/20 hover:bg-primary/15",
       action: shareNative,
       actionLabel: "Share",
     },
@@ -149,8 +149,8 @@ export default function ExportShareStep({ formData, onNext, onBack, savedSlug, i
       id: "instagram",
       label: "Instagram",
       icon: <Instagram className="h-5 w-5" />,
-      color: "text-pink-400",
-      bg: "bg-pink-400/10 border-pink-400/20 hover:bg-pink-400/20",
+      color: "text-pink-600",
+      bg: "bg-pink-50 border-pink-200 hover:bg-pink-100",
       action: shareInstagram,
       actionLabel: "Open",
     },
@@ -158,8 +158,8 @@ export default function ExportShareStep({ formData, onNext, onBack, savedSlug, i
       id: "qr",
       label: "QR Code",
       icon: <QrCode className="h-5 w-5" />,
-      color: "text-amber-400",
-      bg: "bg-amber-400/10 border-amber-400/20 hover:bg-amber-400/20",
+      color: "text-amber-600",
+      bg: "bg-amber-50 border-amber-200 hover:bg-amber-100",
       action: generateQR,
       actionLabel: "Generate",
     },
@@ -167,8 +167,8 @@ export default function ExportShareStep({ formData, onNext, onBack, savedSlug, i
       id: "pdf",
       label: "Print / PDF",
       icon: <FileText className="h-5 w-5" />,
-      color: "text-purple-400",
-      bg: "bg-purple-400/10 border-purple-400/20 hover:bg-purple-400/20",
+      color: "text-purple-600",
+      bg: "bg-purple-50 border-purple-200 hover:bg-purple-100",
       action: printPDF,
       actionLabel: "Print",
     },
@@ -182,7 +182,7 @@ export default function ExportShareStep({ formData, onNext, onBack, savedSlug, i
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: "spring", stiffness: 200, damping: 20 }}
-          className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-6"
+          className="w-20 h-20 bg-primary/15 rounded-full flex items-center justify-center mx-auto mb-6"
         >
           <CheckCircle2 className="h-10 w-10 text-primary" />
         </motion.div>
@@ -204,7 +204,7 @@ export default function ExportShareStep({ formData, onNext, onBack, savedSlug, i
           />
         ))}
 
-        <h2 className="text-3xl md:text-4xl font-serif text-white mb-3">Your Invitation is Ready!</h2>
+        <h2 className="text-3xl md:text-4xl font-serif text-foreground mb-3">Your Invitation is Ready!</h2>
         <p className="text-muted-foreground max-w-lg mx-auto">
           Congratulations! Your cinematic wedding invitation is live and ready to be shared with the world.
         </p>
@@ -212,11 +212,11 @@ export default function ExportShareStep({ formData, onNext, onBack, savedSlug, i
 
       <div className="space-y-6 max-w-2xl mx-auto">
         {/* URL Box */}
-        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 backdrop-blur-xl">
+        <div className="bg-card border border-border/40 rounded-2xl p-6 shadow-sm">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <Link2 className="h-4 w-4 text-primary" />
-              <span className="text-white text-sm font-medium">Your Invitation Link</span>
+              <span className="text-foreground text-sm font-medium">Your Invitation Link</span>
             </div>
             {!isEditingSlug && (
               <Button
@@ -235,8 +235,8 @@ export default function ExportShareStep({ formData, onNext, onBack, savedSlug, i
             <div className="flex-1 relative">
               <ExternalLink className="absolute left-3 top-3 h-4 w-4 text-primary" />
               {isEditingSlug ? (
-                <div className="flex items-center bg-black/40 border border-primary/30 rounded-lg overflow-hidden">
-                  <span className="pl-10 pr-1 text-white/40 text-sm whitespace-nowrap py-2.5">
+                <div className="flex items-center bg-muted/40 border border-primary/30 rounded-lg overflow-hidden">
+                  <span className="pl-10 pr-1 text-foreground/40 text-sm whitespace-nowrap py-2.5">
                     {window.location.origin}/i/
                   </span>
                   <Input
@@ -251,7 +251,7 @@ export default function ExportShareStep({ formData, onNext, onBack, savedSlug, i
                 <Input
                   readOnly
                   value={invitationUrl}
-                  className="bg-black/40 border-white/10 pl-10 text-primary font-medium text-sm focus:ring-0 cursor-text"
+                  className="bg-muted/30 border-border/30 pl-10 text-primary font-medium text-sm focus:ring-0 cursor-text"
                 />
               )}
             </div>
@@ -267,7 +267,7 @@ export default function ExportShareStep({ formData, onNext, onBack, savedSlug, i
             ) : (
               <Button
                 variant="secondary"
-                className="bg-primary/20 text-primary hover:bg-primary/30 border border-primary/30"
+                className="bg-primary/15 text-primary hover:bg-primary/25 border border-primary/30"
                 onClick={copyToClipboard}
               >
                 <Copy className="h-4 w-4" />
@@ -277,7 +277,7 @@ export default function ExportShareStep({ formData, onNext, onBack, savedSlug, i
 
           {savedSlug && (
             <Link href={`/i/${savedSlug}`} target="_blank">
-              <Button className="w-full mt-3 bg-white/5 hover:bg-white/10 border border-white/10 text-white gap-2 rounded-xl">
+              <Button className="w-full mt-3 bg-muted/40 hover:bg-muted/60 border border-border/30 text-foreground gap-2 rounded-xl">
                 <Eye className="h-4 w-4" />
                 View Your Live Invitation
                 <ExternalLink className="h-3 w-3 opacity-50" />
@@ -288,7 +288,7 @@ export default function ExportShareStep({ formData, onNext, onBack, savedSlug, i
 
         {/* Share Options */}
         <div>
-          <p className="text-xs uppercase tracking-widest text-white/30 mb-4">Share with your guests</p>
+          <p className="text-xs uppercase tracking-widest text-foreground/40 mb-4">Share with your guests</p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {SHARE_OPTIONS.map((option) => (
               <motion.button
@@ -298,11 +298,11 @@ export default function ExportShareStep({ formData, onNext, onBack, savedSlug, i
                 onClick={option.action}
                 className={`flex flex-col items-center gap-3 p-5 rounded-2xl border transition-all cursor-pointer group ${option.bg}`}
               >
-                <div className={cn("h-11 w-11 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform", option.color, "bg-black/20")}>
+                <div className={cn("h-11 w-11 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform", option.color, "bg-foreground/[0.05]")}>
                   {option.icon}
                 </div>
                 <div className="text-center">
-                  <p className="text-xs font-medium text-white">{option.label}</p>
+                  <p className="text-xs font-medium text-foreground">{option.label}</p>
                   <p className={cn("text-[10px] mt-0.5", option.color)}>{option.actionLabel} →</p>
                 </div>
               </motion.button>
@@ -311,12 +311,12 @@ export default function ExportShareStep({ formData, onNext, onBack, savedSlug, i
         </div>
 
         {/* Guest personalised link tip */}
-        <div className="bg-white/4 border border-white/8 rounded-2xl p-5">
+        <div className="bg-muted/30 border border-border/25 rounded-2xl p-5">
           <div className="flex items-start gap-3">
             <Sparkles className="h-5 w-5 text-primary shrink-0 mt-0.5" />
             <div>
-              <p className="text-white text-sm font-medium mb-1">Personalise for each guest</p>
-              <p className="text-white/40 text-xs leading-relaxed">
+              <p className="text-foreground text-sm font-medium mb-1">Personalise for each guest</p>
+              <p className="text-foreground/50 text-xs leading-relaxed">
                 Add <code className="text-primary bg-primary/10 px-1 rounded">?guest=GuestName</code> to the URL to greet each guest by name.
                 {savedSlug && (
                   <span className="block mt-1 text-primary/60">
@@ -333,14 +333,14 @@ export default function ExportShareStep({ formData, onNext, onBack, savedSlug, i
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-gradient-to-r from-primary/20 via-primary/10 to-transparent border border-primary/20 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-4"
+          className="bg-gradient-to-r from-primary/15 via-primary/8 to-transparent border border-primary/20 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-between gap-4"
         >
           <div className="flex items-center gap-4">
-            <div className="h-12 w-12 rounded-full bg-primary/20 flex items-center justify-center shrink-0">
+            <div className="h-12 w-12 rounded-full bg-primary/15 flex items-center justify-center shrink-0">
               <Sparkles className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <h4 className="text-white font-serif">Upgrade to Premium</h4>
+              <h4 className="text-foreground font-serif">Upgrade to Premium</h4>
               <p className="text-xs text-muted-foreground">4K video export, unlimited guests, custom domain, WhatsApp reminders</p>
             </div>
           </div>
